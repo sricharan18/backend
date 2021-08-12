@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.time.LocalDate;
 /**
  * A Education.
  */
@@ -60,6 +60,17 @@ public class Education implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
     @ManyToOne
     private SubjectMaster majorSubject;
 
@@ -270,6 +281,57 @@ public class Education implements Serializable {
     public void setWorker(Worker worker) {
         this.worker = worker;
     }
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public Education createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDate getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public Education createdAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedBy() {
+        return this.updatedBy;
+    }
+
+    public Education updatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public Education updatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }    
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -306,6 +368,10 @@ public class Education implements Serializable {
             ", isComplete='" + getIsComplete() + "'" +
             ", degreeType='" + getDegreeType() + "'" +
             ", description='" + getDescription() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedBy='" + getUpdatedBy() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
             "}";
     }
 }

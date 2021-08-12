@@ -34,6 +34,8 @@ public class Authority implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+  
+
 
     @Override
     public boolean equals(Object o) {
@@ -56,6 +58,7 @@ public class Authority implements Serializable {
     public String toString() {
         return "Authority{" +
             "name='" + name + '\'' +
+
             "}";
     }
 }

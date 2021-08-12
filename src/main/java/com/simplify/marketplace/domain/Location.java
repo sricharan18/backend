@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.time.LocalDate;
 /**
  * A Location.
  */
@@ -36,6 +36,18 @@ public class Location implements Serializable {
 
     @Column(name = "city")
     private String city;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
 
     @OneToMany(mappedBy = "location")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -155,6 +167,57 @@ public class Location implements Serializable {
     public void setEmployment(Employment employment) {
         this.employment = employment;
     }
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public Location createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDate getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public Location createdAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedBy() {
+        return this.updatedBy;
+    }
+
+    public Location updatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public Location updatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }    
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -184,6 +247,10 @@ public class Location implements Serializable {
             ", country='" + getCountry() + "'" +
             ", state='" + getState() + "'" +
             ", city='" + getCity() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedBy='" + getUpdatedBy() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
             "}";
     }
 }

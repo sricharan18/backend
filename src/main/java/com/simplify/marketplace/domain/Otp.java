@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.time.LocalDate;
 /**
  * A Otp.
  */
@@ -43,6 +43,12 @@ public class Otp implements Serializable {
 
     @Column(name = "expiry_time")
     private LocalDate expiryTime;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -165,6 +171,32 @@ public class Otp implements Serializable {
     public void setStatus(OtpStatus status) {
         this.status = status;
     }
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public Otp createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDate getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public Otp createdAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+ 
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -198,6 +230,8 @@ public class Otp implements Serializable {
             ", type='" + getType() + "'" +
             ", expiryTime='" + getExpiryTime() + "'" +
             ", status='" + getStatus() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
             "}";
     }
 }

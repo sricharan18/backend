@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.time.LocalDate;
 /**
  * A Worker.
  */
@@ -46,6 +46,18 @@ public class Worker implements Serializable {
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
 
     @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     @OneToOne
@@ -456,6 +468,57 @@ public class Worker implements Serializable {
     public void setSkills(Set<SkillsMaster> skillsMasters) {
         this.skills = skillsMasters;
     }
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public Worker createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDate getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public Worker createdAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedBy() {
+        return this.updatedBy;
+    }
+
+    public Worker updatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public Worker updatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }    
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -488,6 +551,11 @@ public class Worker implements Serializable {
             ", description='" + getDescription() + "'" +
             ", dateOfBirth='" + getDateOfBirth() + "'" +
             ", isActive='" + getIsActive() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedBy='" + getUpdatedBy() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
+
             "}";
     }
 }

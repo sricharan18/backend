@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.time.LocalDate;
 /**
  * A OtpAttempt.
  */
@@ -38,6 +38,13 @@ public class OtpAttempt implements Serializable {
 
     @Column(name = "coookie")
     private String coookie;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -130,6 +137,31 @@ public class OtpAttempt implements Serializable {
     public void setCoookie(String coookie) {
         this.coookie = coookie;
     }
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public OtpAttempt createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDate getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public OtpAttempt createdAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }    
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -161,6 +193,8 @@ public class OtpAttempt implements Serializable {
             ", status='" + getStatus() + "'" +
             ", ip='" + getIp() + "'" +
             ", coookie='" + getCoookie() + "'" +
+            ", createdBy='" + getCreatedBy() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
             "}";
     }
 }
