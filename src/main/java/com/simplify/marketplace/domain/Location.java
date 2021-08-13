@@ -2,19 +2,22 @@ package com.simplify.marketplace.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
+
 /**
  * A Location.
  */
 @Entity
 @Table(name = "location")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Data
 public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,22 +61,9 @@ public class Location implements Serializable {
     @JsonIgnoreProperties(value = { "locations", "company", "worker" }, allowSetters = true)
     private Employment employment;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Location id(Long id) {
         this.id = id;
         return this;
-    }
-
-    public Integer getPincode() {
-        return this.pincode;
     }
 
     public Location pincode(Integer pincode) {
@@ -81,25 +71,9 @@ public class Location implements Serializable {
         return this;
     }
 
-    public void setPincode(Integer pincode) {
-        this.pincode = pincode;
-    }
-
-    public String getCountry() {
-        return this.country;
-    }
-
     public Location country(String country) {
         this.country = country;
         return this;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getState() {
-        return this.state;
     }
 
     public Location state(String state) {
@@ -107,25 +81,9 @@ public class Location implements Serializable {
         return this;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCity() {
-        return this.city;
-    }
-
     public Location city(String city) {
         this.city = city;
         return this;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Set<LocationPrefrence> getLocationPrefrences() {
-        return this.locationPrefrences;
     }
 
     public Location locationPrefrences(Set<LocationPrefrence> locationPrefrences) {
@@ -145,30 +103,9 @@ public class Location implements Serializable {
         return this;
     }
 
-    public void setLocationPrefrences(Set<LocationPrefrence> locationPrefrences) {
-        if (this.locationPrefrences != null) {
-            this.locationPrefrences.forEach(i -> i.setLocation(null));
-        }
-        if (locationPrefrences != null) {
-            locationPrefrences.forEach(i -> i.setLocation(this));
-        }
-        this.locationPrefrences = locationPrefrences;
-    }
-
-    public Employment getEmployment() {
-        return this.employment;
-    }
-
     public Location employment(Employment employment) {
         this.setEmployment(employment);
         return this;
-    }
-
-    public void setEmployment(Employment employment) {
-        this.employment = employment;
-    }
-    public String getCreatedBy() {
-        return this.createdBy;
     }
 
     public Location createdBy(String createdBy) {
@@ -176,25 +113,9 @@ public class Location implements Serializable {
         return this;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDate getCreatedAt() {
-        return this.createdAt;
-    }
-
     public Location createdAt(LocalDate createdAt) {
         this.createdAt = createdAt;
         return this;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedBy() {
-        return this.updatedBy;
     }
 
     public Location updatedBy(String updatedBy) {
@@ -202,55 +123,8 @@ public class Location implements Serializable {
         return this;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return this.updatedAt;
-    }
-
     public Location updatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
         return this;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }    
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Location)) {
-            return false;
-        }
-        return id != null && id.equals(((Location) o).id);
-    }
-
-    @Override
-    public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "Location{" +
-            "id=" + getId() +
-            ", pincode=" + getPincode() +
-            ", country='" + getCountry() + "'" +
-            ", state='" + getState() + "'" +
-            ", city='" + getCity() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedBy='" + getUpdatedBy() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-            "}";
     }
 }
