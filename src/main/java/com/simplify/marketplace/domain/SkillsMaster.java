@@ -2,18 +2,21 @@ package com.simplify.marketplace.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
+
 /**
  * A SkillsMaster.
  */
 @Entity
 @Table(name = "skills_master")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Data
 public class SkillsMaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,35 +50,14 @@ public class SkillsMaster implements Serializable {
     )
     private Set<Worker> workers = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public SkillsMaster id(Long id) {
         this.id = id;
         return this;
     }
 
-    public String getSkillName() {
-        return this.skillName;
-    }
-
     public SkillsMaster skillName(String skillName) {
         this.skillName = skillName;
         return this;
-    }
-
-    public void setSkillName(String skillName) {
-        this.skillName = skillName;
-    }
-
-    public Set<Worker> getWorkers() {
-        return this.workers;
     }
 
     public SkillsMaster workers(Set<Worker> workers) {
@@ -95,30 +77,9 @@ public class SkillsMaster implements Serializable {
         return this;
     }
 
-    public void setWorkers(Set<Worker> workers) {
-        if (this.workers != null) {
-            this.workers.forEach(i -> i.removeSkill(this));
-        }
-        if (workers != null) {
-            workers.forEach(i -> i.addSkill(this));
-        }
-        this.workers = workers;
-    }
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
     public SkillsMaster createdBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDate getCreatedAt() {
-        return this.createdAt;
     }
 
     public SkillsMaster createdAt(LocalDate createdAt) {
@@ -126,67 +87,13 @@ public class SkillsMaster implements Serializable {
         return this;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedBy() {
-        return this.updatedBy;
-    }
-
     public SkillsMaster updatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
         return this;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return this.updatedAt;
-    }
-
     public SkillsMaster updatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
         return this;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }    
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SkillsMaster)) {
-            return false;
-        }
-        return id != null && id.equals(((SkillsMaster) o).id);
-    }
-
-    @Override
-    public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "SkillsMaster{" +
-            "id=" + getId() +
-            ", skillName='" + getSkillName() + "'" +
-            
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedBy='" + getUpdatedBy() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-
-            "}";
     }
 }
