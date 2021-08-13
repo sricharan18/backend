@@ -2,48 +2,23 @@ package com.simplify.marketplace.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-
+import lombok.Data;
+import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.CustomUser} entity.
  */
+@Data
 public class CustomUserDTO implements Serializable {
 
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
+    private String createdBy;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDate createdAt;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CustomUserDTO)) {
-            return false;
-        }
+    private String updatedBy;
 
-        CustomUserDTO customUserDTO = (CustomUserDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, customUserDTO.id);
-    }
+    private LocalDate updatedAt;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
 
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "CustomUserDTO{" +
-            "id=" + getId() +
-            "}";
-    }
 }

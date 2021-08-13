@@ -3,10 +3,12 @@ package com.simplify.marketplace.service.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-
+import lombok.Data;
+import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Employment} entity.
  */
+@Data
 public class EmploymentDTO implements Serializable {
 
     private Long id;
@@ -29,121 +31,12 @@ public class EmploymentDTO implements Serializable {
 
     private WorkerDTO worker;
 
-    public Long getId() {
-        return id;
-    }
+    private String createdBy;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDate createdAt;
+    
+    private String updatedBy;
+    
+    private LocalDate updatedAt;
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Boolean getIsCurrent() {
-        return isCurrent;
-    }
-
-    public void setIsCurrent(Boolean isCurrent) {
-        this.isCurrent = isCurrent;
-    }
-
-    public Integer getLastSalary() {
-        return lastSalary;
-    }
-
-    public void setLastSalary(Integer lastSalary) {
-        this.lastSalary = lastSalary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public ClientDTO getCompany() {
-        return company;
-    }
-
-    public void setCompany(ClientDTO company) {
-        this.company = company;
-    }
-
-    public WorkerDTO getWorker() {
-        return worker;
-    }
-
-    public void setWorker(WorkerDTO worker) {
-        this.worker = worker;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof EmploymentDTO)) {
-            return false;
-        }
-
-        EmploymentDTO employmentDTO = (EmploymentDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, employmentDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "EmploymentDTO{" +
-            "id=" + getId() +
-            ", jobTitle='" + getJobTitle() + "'" +
-            ", companyName='" + getCompanyName() + "'" +
-            ", startDate='" + getStartDate() + "'" +
-            ", endDate='" + getEndDate() + "'" +
-            ", isCurrent='" + getIsCurrent() + "'" +
-            ", lastSalary=" + getLastSalary() +
-            ", description='" + getDescription() + "'" +
-            ", company=" + getCompany() +
-            ", worker=" + getWorker() +
-            "}";
-    }
 }
