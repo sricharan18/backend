@@ -2,59 +2,27 @@ package com.simplify.marketplace.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-
+import lombok.Data;
+import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.SkillsMaster} entity.
  */
+@Data
 public class SkillsMasterDTO implements Serializable {
 
     private Long id;
 
     private String skillName;
 
-    public Long getId() {
-        return id;
-    }
+    private String createdBy;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private LocalDate createdAt;
+    
+    private String updatedBy;
+    
+    private LocalDate updatedAt;
+    
 
-    public String getSkillName() {
-        return skillName;
-    }
 
-    public void setSkillName(String skillName) {
-        this.skillName = skillName;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SkillsMasterDTO)) {
-            return false;
-        }
-
-        SkillsMasterDTO skillsMasterDTO = (SkillsMasterDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, skillsMasterDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "SkillsMasterDTO{" +
-            "id=" + getId() +
-            ", skillName='" + getSkillName() + "'" +
-            "}";
-    }
 }

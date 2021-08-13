@@ -2,10 +2,13 @@ package com.simplify.marketplace.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.Data;
+import java.time.LocalDate;
 
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Category} entity.
  */
+@Data
 public class CategoryDTO implements Serializable {
 
     private Long id;
@@ -17,77 +20,13 @@ public class CategoryDTO implements Serializable {
     private Boolean isActive;
 
     private CategoryDTO parent;
+    
+    private String createdBy;
 
-    public Long getId() {
-        return id;
-    }
+    private LocalDate createdAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String updatedBy;
 
-    public String getName() {
-        return name;
-    }
+    private LocalDate updatedAt;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getIsParent() {
-        return isParent;
-    }
-
-    public void setIsParent(Boolean isParent) {
-        this.isParent = isParent;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public CategoryDTO getParent() {
-        return parent;
-    }
-
-    public void setParent(CategoryDTO parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CategoryDTO)) {
-            return false;
-        }
-
-        CategoryDTO categoryDTO = (CategoryDTO) o;
-        if (this.id == null) {
-            return false;
-        }
-        return Objects.equals(this.id, categoryDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "CategoryDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", isParent='" + getIsParent() + "'" +
-            ", isActive='" + getIsActive() + "'" +
-            ", parent=" + getParent() +
-            "}";
-    }
 }
