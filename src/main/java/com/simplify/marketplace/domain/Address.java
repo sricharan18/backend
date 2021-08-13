@@ -8,6 +8,7 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+
 /**
  * A Address.
  */
@@ -51,4 +52,67 @@ public class Address implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     private CustomUser customUser;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Address id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+
+
+    public Address line1(String line1) {
+        this.line1 = line1;
+        return this;
+    }
+
+
+
+    public Address line2(String line2) {
+        this.line2 = line2;
+        return this;
+    }
+
+
+    public Address tag(String tag) {
+        this.tag = tag;
+        return this;
+    }
+
+    public Address location(Location location) {
+        this.setLocation(location);
+        return this;
+    }
+
+
+
+    public Address customUser(CustomUser customUser) {
+        this.setCustomUser(customUser);
+        return this;
+    }
+
+    public Address createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    public Address createdAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public Address updatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public Address updatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
 }
