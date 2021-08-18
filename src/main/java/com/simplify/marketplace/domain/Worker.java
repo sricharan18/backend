@@ -1,5 +1,6 @@
 package com.simplify.marketplace.domain;
 
+import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,13 +10,14 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import java.time.LocalDate;
+
 /**
  * A Worker.
  */
 @Entity
 @Table(name = "worker")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Data
 public class Worker implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,18 +48,6 @@ public class Worker implements Serializable {
 
     @Column(name = "is_active")
     private Boolean isActive;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "created_at")
-    private LocalDate createdAt;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
 
     @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     @OneToOne
@@ -109,11 +99,6 @@ public class Worker implements Serializable {
     @JsonIgnoreProperties(value = { "workers" }, allowSetters = true)
     private Set<SkillsMaster> skills = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -121,10 +106,6 @@ public class Worker implements Serializable {
     public Worker id(Long id) {
         this.id = id;
         return this;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
     }
 
     public Worker firstName(String firstName) {
@@ -136,10 +117,6 @@ public class Worker implements Serializable {
         this.firstName = firstName;
     }
 
-    public String getMiddleName() {
-        return this.middleName;
-    }
-
     public Worker middleName(String middleName) {
         this.middleName = middleName;
         return this;
@@ -148,11 +125,7 @@ public class Worker implements Serializable {
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
+    
     public Worker lastName(String lastName) {
         this.lastName = lastName;
         return this;
@@ -160,10 +133,6 @@ public class Worker implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPrimaryPhone() {
-        return this.primaryPhone;
     }
 
     public Worker primaryPhone(String primaryPhone) {
@@ -175,10 +144,6 @@ public class Worker implements Serializable {
         this.primaryPhone = primaryPhone;
     }
 
-    public String getDescription() {
-        return this.description;
-    }
-
     public Worker description(String description) {
         this.description = description;
         return this;
@@ -186,10 +151,6 @@ public class Worker implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return this.dateOfBirth;
     }
 
     public Worker dateOfBirth(LocalDate dateOfBirth) {
@@ -201,10 +162,6 @@ public class Worker implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Boolean getIsActive() {
-        return this.isActive;
-    }
-
     public Worker isActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
@@ -214,10 +171,6 @@ public class Worker implements Serializable {
         this.isActive = isActive;
     }
 
-    public CustomUser getCustomUser() {
-        return this.customUser;
-    }
-
     public Worker customUser(CustomUser customUser) {
         this.setCustomUser(customUser);
         return this;
@@ -225,10 +178,6 @@ public class Worker implements Serializable {
 
     public void setCustomUser(CustomUser customUser) {
         this.customUser = customUser;
-    }
-
-    public Set<File> getFiles() {
-        return this.files;
     }
 
     public Worker files(Set<File> files) {
@@ -258,10 +207,6 @@ public class Worker implements Serializable {
         this.files = files;
     }
 
-    public Set<Education> getEducations() {
-        return this.educations;
-    }
-
     public Worker educations(Set<Education> educations) {
         this.setEducations(educations);
         return this;
@@ -287,10 +232,6 @@ public class Worker implements Serializable {
             educations.forEach(i -> i.setWorker(this));
         }
         this.educations = educations;
-    }
-
-    public Set<Certificate> getCertificates() {
-        return this.certificates;
     }
 
     public Worker certificates(Set<Certificate> certificates) {
@@ -320,10 +261,6 @@ public class Worker implements Serializable {
         this.certificates = certificates;
     }
 
-    public Set<Employment> getEmployments() {
-        return this.employments;
-    }
-
     public Worker employments(Set<Employment> employments) {
         this.setEmployments(employments);
         return this;
@@ -349,10 +286,6 @@ public class Worker implements Serializable {
             employments.forEach(i -> i.setWorker(this));
         }
         this.employments = employments;
-    }
-
-    public Set<Portfolio> getPortfolios() {
-        return this.portfolios;
     }
 
     public Worker portfolios(Set<Portfolio> portfolios) {
@@ -382,10 +315,6 @@ public class Worker implements Serializable {
         this.portfolios = portfolios;
     }
 
-    public Set<Refereces> getRefereces() {
-        return this.refereces;
-    }
-
     public Worker refereces(Set<Refereces> refereces) {
         this.setRefereces(refereces);
         return this;
@@ -411,10 +340,6 @@ public class Worker implements Serializable {
             refereces.forEach(i -> i.setWorker(this));
         }
         this.refereces = refereces;
-    }
-
-    public Set<JobPreference> getJobPreferences() {
-        return this.jobPreferences;
     }
 
     public Worker jobPreferences(Set<JobPreference> jobPreferences) {
@@ -444,10 +369,6 @@ public class Worker implements Serializable {
         this.jobPreferences = jobPreferences;
     }
 
-    public Set<SkillsMaster> getSkills() {
-        return this.skills;
-    }
-
     public Worker skills(Set<SkillsMaster> skillsMasters) {
         this.setSkills(skillsMasters);
         return this;
@@ -468,57 +389,6 @@ public class Worker implements Serializable {
     public void setSkills(Set<SkillsMaster> skillsMasters) {
         this.skills = skillsMasters;
     }
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
-    public Worker createdBy(String createdBy) {
-        this.createdBy = createdBy;
-        return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDate getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public Worker createdAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedBy() {
-        return this.updatedBy;
-    }
-
-    public Worker updatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-        return this;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return this.updatedAt;
-    }
-
-    public Worker updatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }    
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -551,11 +421,7 @@ public class Worker implements Serializable {
             ", description='" + getDescription() + "'" +
             ", dateOfBirth='" + getDateOfBirth() + "'" +
             ", isActive='" + getIsActive() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", updatedBy='" + getUpdatedBy() + "'" +
-            ", updatedAt='" + getUpdatedAt() + "'" +
-
             "}";
     }
 }
+
