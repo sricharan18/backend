@@ -1,5 +1,8 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
+
 import com.simplify.marketplace.repository.CategoryRepository;
 import com.simplify.marketplace.service.CategoryService;
 import com.simplify.marketplace.service.dto.CategoryDTO;
@@ -29,6 +32,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class CategoryResource {
+    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(CategoryResource.class);
 
@@ -41,9 +45,10 @@ public class CategoryResource {
 
     private final CategoryRepository categoryRepository;
 
-    public CategoryResource(CategoryService categoryService, CategoryRepository categoryRepository) {
+    public CategoryResource(CategoryService categoryService, CategoryRepository categoryRepository,UserService userService) {
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +64,10 @@ public class CategoryResource {
         if (categoryDTO.getId() != null) {
             throw new BadRequestAlertException("A new category cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        categoryDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        categoryDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        categoryDTO.setUpdatedAt(LocalDate.now());
+        categoryDTO.setCreatedAt(LocalDate.now());
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity
             .created(new URI("/api/categories/" + result.getId()))
@@ -92,7 +101,8 @@ public class CategoryResource {
         if (!categoryRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        categoryDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        categoryDTO.setUpdatedAt(LocalDate.now());
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity
             .ok()
@@ -127,6 +137,8 @@ public class CategoryResource {
         if (!categoryRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        categoryDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        categoryDTO.setUpdatedAt(LocalDate.now());
 
         Optional<CategoryDTO> result = categoryService.partialUpdate(categoryDTO);
 

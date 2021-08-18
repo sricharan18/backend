@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.LocationRepository;
 import com.simplify.marketplace.service.LocationService;
 import com.simplify.marketplace.service.dto.LocationDTO;
@@ -32,6 +34,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class LocationResource {
 
+    private UserService userService;
     private final Logger log = LoggerFactory.getLogger(LocationResource.class);
 
     private static final String ENTITY_NAME = "location";
@@ -43,9 +46,10 @@ public class LocationResource {
 
     private final LocationRepository locationRepository;
 
-    public LocationResource(LocationService locationService, LocationRepository locationRepository) {
+    public LocationResource(LocationService locationService, LocationRepository locationRepository,UserService userService) {
         this.locationService = locationService;
         this.locationRepository = locationRepository;
+        this.userService = userService;
     }
 
     /**
@@ -61,6 +65,10 @@ public class LocationResource {
         if (locationDTO.getId() != null) {
             throw new BadRequestAlertException("A new location cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        locationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setUpdatedAt(LocalDate.now());
+        locationDTO.setCreatedAt(LocalDate.now());
         LocationDTO result = locationService.save(locationDTO);
         return ResponseEntity
             .created(new URI("/api/locations/" + result.getId()))
@@ -94,7 +102,8 @@ public class LocationResource {
         if (!locationRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setUpdatedAt(LocalDate.now());
         LocationDTO result = locationService.save(locationDTO);
         return ResponseEntity
             .ok()
@@ -129,7 +138,8 @@ public class LocationResource {
         if (!locationRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setUpdatedAt(LocalDate.now());
         Optional<LocationDTO> result = locationService.partialUpdate(locationDTO);
 
         return ResponseUtil.wrapOrNotFound(

@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.WorkerService;
 import com.simplify.marketplace.service.dto.WorkerDTO;
@@ -31,6 +33,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class WorkerResource {
+    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(WorkerResource.class);
 
@@ -43,9 +46,10 @@ public class WorkerResource {
 
     private final WorkerRepository workerRepository;
 
-    public WorkerResource(WorkerService workerService, WorkerRepository workerRepository) {
+    public WorkerResource(WorkerService workerService, WorkerRepository workerRepository,UserService userService) {
         this.workerService = workerService;
         this.workerRepository = workerRepository;
+        this.userService = userService;
     }
 
     /**
@@ -61,6 +65,10 @@ public class WorkerResource {
         if (workerDTO.getId() != null) {
             throw new BadRequestAlertException("A new worker cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        workerDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        workerDTO.setUpdatedAt(LocalDate.now());
+        workerDTO.setCreatedAt(LocalDate.now());
         WorkerDTO result = workerService.save(workerDTO);
         return ResponseEntity
             .created(new URI("/api/workers/" + result.getId()))
@@ -94,7 +102,8 @@ public class WorkerResource {
         if (!workerRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        workerDTO.setUpdatedAt(LocalDate.now());
+        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         WorkerDTO result = workerService.save(workerDTO);
         return ResponseEntity
             .ok()
@@ -129,7 +138,8 @@ public class WorkerResource {
         if (!workerRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        workerDTO.setUpdatedAt(LocalDate.now());
+        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         Optional<WorkerDTO> result = workerService.partialUpdate(workerDTO);
 
         return ResponseUtil.wrapOrNotFound(

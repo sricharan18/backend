@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.ClientRepository;
 import com.simplify.marketplace.service.ClientService;
 import com.simplify.marketplace.service.dto.ClientDTO;
@@ -29,6 +31,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class ClientResource {
+    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(ClientResource.class);
 
@@ -41,9 +44,10 @@ public class ClientResource {
 
     private final ClientRepository clientRepository;
 
-    public ClientResource(ClientService clientService, ClientRepository clientRepository) {
+    public ClientResource(ClientService clientService, ClientRepository clientRepository,UserService userService) {
         this.clientService = clientService;
         this.clientRepository = clientRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +63,10 @@ public class ClientResource {
         if (clientDTO.getId() != null) {
             throw new BadRequestAlertException("A new client cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        clientDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        clientDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        clientDTO.setUpdatedAt(LocalDate.now());
+        clientDTO.setCreatedAt(LocalDate.now());
         ClientDTO result = clientService.save(clientDTO);
         return ResponseEntity
             .created(new URI("/api/clients/" + result.getId()))
@@ -92,7 +100,8 @@ public class ClientResource {
         if (!clientRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        clientDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        clientDTO.setUpdatedAt(LocalDate.now());
         ClientDTO result = clientService.save(clientDTO);
         return ResponseEntity
             .ok()
@@ -127,6 +136,8 @@ public class ClientResource {
         if (!clientRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        clientDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        clientDTO.setUpdatedAt(LocalDate.now());
 
         Optional<ClientDTO> result = clientService.partialUpdate(clientDTO);
 

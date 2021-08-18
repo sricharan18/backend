@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.ReferecesRepository;
 import com.simplify.marketplace.service.ReferecesService;
 import com.simplify.marketplace.service.dto.ReferecesDTO;
@@ -32,6 +34,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class ReferecesResource {
 
+    private UserService userService;
     private final Logger log = LoggerFactory.getLogger(ReferecesResource.class);
 
     private static final String ENTITY_NAME = "refereces";
@@ -43,9 +46,10 @@ public class ReferecesResource {
 
     private final ReferecesRepository referecesRepository;
 
-    public ReferecesResource(ReferecesService referecesService, ReferecesRepository referecesRepository) {
+    public ReferecesResource(ReferecesService referecesService, ReferecesRepository referecesRepository,UserService userService) {
         this.referecesService = referecesService;
         this.referecesRepository = referecesRepository;
+        this.userService = userService;
     }
 
     /**
@@ -61,6 +65,10 @@ public class ReferecesResource {
         if (referecesDTO.getId() != null) {
             throw new BadRequestAlertException("A new refereces cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        referecesDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setUpdatedAt(LocalDate.now());
+        referecesDTO.setCreatedAt(LocalDate.now());
         ReferecesDTO result = referecesService.save(referecesDTO);
         return ResponseEntity
             .created(new URI("/api/refereces/" + result.getId()))
@@ -94,7 +102,8 @@ public class ReferecesResource {
         if (!referecesRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setUpdatedAt(LocalDate.now());
         ReferecesDTO result = referecesService.save(referecesDTO);
         return ResponseEntity
             .ok()
@@ -129,7 +138,8 @@ public class ReferecesResource {
         if (!referecesRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setUpdatedAt(LocalDate.now());
         Optional<ReferecesDTO> result = referecesService.partialUpdate(referecesDTO);
 
         return ResponseUtil.wrapOrNotFound(

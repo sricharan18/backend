@@ -1,5 +1,8 @@
 package com.simplify.marketplace.web.rest;
 
+
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.PortfolioRepository;
 import com.simplify.marketplace.service.PortfolioService;
 import com.simplify.marketplace.service.dto.PortfolioDTO;
@@ -29,6 +32,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class PortfolioResource {
+    private final UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(PortfolioResource.class);
 
@@ -41,9 +45,10 @@ public class PortfolioResource {
 
     private final PortfolioRepository portfolioRepository;
 
-    public PortfolioResource(PortfolioService portfolioService, PortfolioRepository portfolioRepository) {
+    public PortfolioResource(PortfolioService portfolioService, PortfolioRepository portfolioRepository,UserService userService) {
         this.portfolioService = portfolioService;
         this.portfolioRepository = portfolioRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +64,10 @@ public class PortfolioResource {
         if (portfolioDTO.getId() != null) {
             throw new BadRequestAlertException("A new portfolio cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        portfolioDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setUpdatedAt(LocalDate.now());
+        portfolioDTO.setCreatedAt(LocalDate.now());
         PortfolioDTO result = portfolioService.save(portfolioDTO);
         return ResponseEntity
             .created(new URI("/api/portfolios/" + result.getId()))
@@ -92,6 +101,8 @@ public class PortfolioResource {
         if (!portfolioRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setUpdatedAt(LocalDate.now());
 
         PortfolioDTO result = portfolioService.save(portfolioDTO);
         return ResponseEntity
@@ -127,6 +138,8 @@ public class PortfolioResource {
         if (!portfolioRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setUpdatedAt(LocalDate.now());
 
         Optional<PortfolioDTO> result = portfolioService.partialUpdate(portfolioDTO);
 

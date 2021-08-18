@@ -28,6 +28,7 @@ public class UserJWTController {
     public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
+
     }
 
     @PostMapping("/authenticate")
@@ -36,7 +37,6 @@ public class UserJWTController {
             loginVM.getUsername(),
             loginVM.getPassword()
         );
-
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication, loginVM.isRememberMe());

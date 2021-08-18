@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import com.simplify.marketplace.service.UserService;
+import java.time.LocalDate;  
 import com.simplify.marketplace.repository.CertificateRepository;
 import com.simplify.marketplace.service.CertificateService;
 import com.simplify.marketplace.service.dto.CertificateDTO;
@@ -29,6 +31,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class CertificateResource {
+    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(CertificateResource.class);
 
@@ -41,9 +44,10 @@ public class CertificateResource {
 
     private final CertificateRepository certificateRepository;
 
-    public CertificateResource(CertificateService certificateService, CertificateRepository certificateRepository) {
+    public CertificateResource(CertificateService certificateService, CertificateRepository certificateRepository,UserService userService) {
         this.certificateService = certificateService;
         this.certificateRepository = certificateRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +63,10 @@ public class CertificateResource {
         if (certificateDTO.getId() != null) {
             throw new BadRequestAlertException("A new certificate cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        certificateDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setUpdatedAt(LocalDate.now());
+        certificateDTO.setCreatedAt(LocalDate.now());
         CertificateDTO result = certificateService.save(certificateDTO);
         return ResponseEntity
             .created(new URI("/api/certificates/" + result.getId()))
@@ -93,6 +101,8 @@ public class CertificateResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setUpdatedAt(LocalDate.now());
         CertificateDTO result = certificateService.save(certificateDTO);
         return ResponseEntity
             .ok()
@@ -127,6 +137,8 @@ public class CertificateResource {
         if (!certificateRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setUpdatedAt(LocalDate.now());
 
         Optional<CertificateDTO> result = certificateService.partialUpdate(certificateDTO);
 

@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.SkillsMasterRepository;
 import com.simplify.marketplace.service.SkillsMasterService;
 import com.simplify.marketplace.service.dto.SkillsMasterDTO;
@@ -29,6 +31,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class SkillsMasterResource {
+    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(SkillsMasterResource.class);
 
@@ -41,9 +44,10 @@ public class SkillsMasterResource {
 
     private final SkillsMasterRepository skillsMasterRepository;
 
-    public SkillsMasterResource(SkillsMasterService skillsMasterService, SkillsMasterRepository skillsMasterRepository) {
+    public SkillsMasterResource(SkillsMasterService skillsMasterService, SkillsMasterRepository skillsMasterRepository,UserService userService) {
         this.skillsMasterService = skillsMasterService;
         this.skillsMasterRepository = skillsMasterRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +63,10 @@ public class SkillsMasterResource {
         if (skillsMasterDTO.getId() != null) {
             throw new BadRequestAlertException("A new skillsMaster cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        skillsMasterDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        skillsMasterDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        skillsMasterDTO.setUpdatedAt(LocalDate.now());
+        skillsMasterDTO.setCreatedAt(LocalDate.now());
         SkillsMasterDTO result = skillsMasterService.save(skillsMasterDTO);
         return ResponseEntity
             .created(new URI("/api/skills-masters/" + result.getId()))
@@ -92,6 +100,8 @@ public class SkillsMasterResource {
         if (!skillsMasterRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        skillsMasterDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        skillsMasterDTO.setUpdatedAt(LocalDate.now());
 
         SkillsMasterDTO result = skillsMasterService.save(skillsMasterDTO);
         return ResponseEntity
@@ -127,6 +137,8 @@ public class SkillsMasterResource {
         if (!skillsMasterRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        skillsMasterDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        skillsMasterDTO.setUpdatedAt(LocalDate.now());
 
         Optional<SkillsMasterDTO> result = skillsMasterService.partialUpdate(skillsMasterDTO);
 

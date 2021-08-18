@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.FileRepository;
 import com.simplify.marketplace.service.FileService;
 import com.simplify.marketplace.service.dto.FileDTO;
@@ -29,6 +31,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class FileResource {
+    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(FileResource.class);
 
@@ -41,9 +44,10 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
-    public FileResource(FileService fileService, FileRepository fileRepository) {
+    public FileResource(FileService fileService, FileRepository fileRepository,UserService userService) {
         this.fileService = fileService;
         this.fileRepository = fileRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +63,10 @@ public class FileResource {
         if (fileDTO.getId() != null) {
             throw new BadRequestAlertException("A new file cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        fileDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setUpdatedAt(LocalDate.now());
+        fileDTO.setCreatedAt(LocalDate.now());
         FileDTO result = fileService.save(fileDTO);
         return ResponseEntity
             .created(new URI("/api/files/" + result.getId()))
@@ -90,6 +98,8 @@ public class FileResource {
         if (!fileRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setUpdatedAt(LocalDate.now());
 
         FileDTO result = fileService.save(fileDTO);
         return ResponseEntity
@@ -125,7 +135,8 @@ public class FileResource {
         if (!fileRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setUpdatedAt(LocalDate.now());
         Optional<FileDTO> result = fileService.partialUpdate(fileDTO);
 
         return ResponseUtil.wrapOrNotFound(

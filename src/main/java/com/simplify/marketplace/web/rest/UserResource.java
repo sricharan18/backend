@@ -1,5 +1,7 @@
 package com.simplify.marketplace.web.rest;
 
+import java.time.LocalDate;  
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.config.Constants;
 import com.simplify.marketplace.domain.User;
 import com.simplify.marketplace.repository.UserRepository;
@@ -118,6 +120,10 @@ public class UserResource {
         } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException();
         } else {
+            // userDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
+            // userDTO.setlastModifiedBy(userService.getUserWithAuthorities().get().getId()+"");
+            // userDTO.setlastModifiedDate(LocalDate.now());
+            // userDTO.setcreatedDate(LocalDate.now());
             User newUser = userService.createUser(userDTO);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity
@@ -147,6 +153,9 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
+        // userDTO.setlastModifiedBy(userService.getUserWithAuthorities().get().getId()+"");
+            // userDTO.setlastModifiedDate(LocalDate.now());
+            
         Optional<AdminUserDTO> updatedUser = userService.updateUser(userDTO);
 
         return ResponseUtil.wrapOrNotFound(
