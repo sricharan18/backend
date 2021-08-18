@@ -1,14 +1,13 @@
 package com.simplify.marketplace.domain;
 
+import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -49,18 +48,6 @@ public class Worker implements Serializable {
 
     @Column(name = "is_active")
     private Boolean isActive;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "created_at")
-    private LocalDate createdAt;
-
-    @Column(name = "updated_by")
-    private String updatedBy;
-
-    @Column(name = "updated_at")
-    private LocalDate updatedAt;
 
     @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     @OneToOne
@@ -112,6 +99,10 @@ public class Worker implements Serializable {
     @JsonIgnoreProperties(value = { "workers" }, allowSetters = true)
     private Set<SkillsMaster> skills = new HashSet<>();
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Worker id(Long id) {
         this.id = id;
         return this;
@@ -122,14 +113,26 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public Worker middleName(String middleName) {
         this.middleName = middleName;
         return this;
     }
 
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+    
     public Worker lastName(String lastName) {
         this.lastName = lastName;
         return this;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Worker primaryPhone(String primaryPhone) {
@@ -137,9 +140,17 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setPrimaryPhone(String primaryPhone) {
+        this.primaryPhone = primaryPhone;
+    }
+
     public Worker description(String description) {
         this.description = description;
         return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Worker dateOfBirth(LocalDate dateOfBirth) {
@@ -147,14 +158,26 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public Worker isActive(Boolean isActive) {
         this.isActive = isActive;
         return this;
     }
 
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public Worker customUser(CustomUser customUser) {
         this.setCustomUser(customUser);
         return this;
+    }
+
+    public void setCustomUser(CustomUser customUser) {
+        this.customUser = customUser;
     }
 
     public Worker files(Set<File> files) {
@@ -174,6 +197,16 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setFiles(Set<File> files) {
+        if (this.files != null) {
+            this.files.forEach(i -> i.setWorker(null));
+        }
+        if (files != null) {
+            files.forEach(i -> i.setWorker(this));
+        }
+        this.files = files;
+    }
+
     public Worker educations(Set<Education> educations) {
         this.setEducations(educations);
         return this;
@@ -189,6 +222,16 @@ public class Worker implements Serializable {
         this.educations.remove(education);
         education.setWorker(null);
         return this;
+    }
+
+    public void setEducations(Set<Education> educations) {
+        if (this.educations != null) {
+            this.educations.forEach(i -> i.setWorker(null));
+        }
+        if (educations != null) {
+            educations.forEach(i -> i.setWorker(this));
+        }
+        this.educations = educations;
     }
 
     public Worker certificates(Set<Certificate> certificates) {
@@ -208,6 +251,16 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setCertificates(Set<Certificate> certificates) {
+        if (this.certificates != null) {
+            this.certificates.forEach(i -> i.setWorker(null));
+        }
+        if (certificates != null) {
+            certificates.forEach(i -> i.setWorker(this));
+        }
+        this.certificates = certificates;
+    }
+
     public Worker employments(Set<Employment> employments) {
         this.setEmployments(employments);
         return this;
@@ -223,6 +276,16 @@ public class Worker implements Serializable {
         this.employments.remove(employment);
         employment.setWorker(null);
         return this;
+    }
+
+    public void setEmployments(Set<Employment> employments) {
+        if (this.employments != null) {
+            this.employments.forEach(i -> i.setWorker(null));
+        }
+        if (employments != null) {
+            employments.forEach(i -> i.setWorker(this));
+        }
+        this.employments = employments;
     }
 
     public Worker portfolios(Set<Portfolio> portfolios) {
@@ -242,6 +305,16 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setPortfolios(Set<Portfolio> portfolios) {
+        if (this.portfolios != null) {
+            this.portfolios.forEach(i -> i.setWorker(null));
+        }
+        if (portfolios != null) {
+            portfolios.forEach(i -> i.setWorker(this));
+        }
+        this.portfolios = portfolios;
+    }
+
     public Worker refereces(Set<Refereces> refereces) {
         this.setRefereces(refereces);
         return this;
@@ -257,6 +330,16 @@ public class Worker implements Serializable {
         this.refereces.remove(refereces);
         refereces.setWorker(null);
         return this;
+    }
+
+    public void setRefereces(Set<Refereces> refereces) {
+        if (this.refereces != null) {
+            this.refereces.forEach(i -> i.setWorker(null));
+        }
+        if (refereces != null) {
+            refereces.forEach(i -> i.setWorker(this));
+        }
+        this.refereces = refereces;
     }
 
     public Worker jobPreferences(Set<JobPreference> jobPreferences) {
@@ -276,6 +359,16 @@ public class Worker implements Serializable {
         return this;
     }
 
+    public void setJobPreferences(Set<JobPreference> jobPreferences) {
+        if (this.jobPreferences != null) {
+            this.jobPreferences.forEach(i -> i.setWorker(null));
+        }
+        if (jobPreferences != null) {
+            jobPreferences.forEach(i -> i.setWorker(this));
+        }
+        this.jobPreferences = jobPreferences;
+    }
+
     public Worker skills(Set<SkillsMaster> skillsMasters) {
         this.setSkills(skillsMasters);
         return this;
@@ -293,23 +386,42 @@ public class Worker implements Serializable {
         return this;
     }
 
-    public Worker createdBy(String createdBy) {
-        this.createdBy = createdBy;
-        return this;
+    public void setSkills(Set<SkillsMaster> skillsMasters) {
+        this.skills = skillsMasters;
     }
 
-    public Worker createdAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-        return this;
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Worker)) {
+            return false;
+        }
+        return id != null && id.equals(((Worker) o).id);
     }
 
-    public Worker updatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-        return this;
+    @Override
+    public int hashCode() {
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
-    public Worker updatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "Worker{" +
+            "id=" + getId() +
+            ", firstName='" + getFirstName() + "'" +
+            ", middleName='" + getMiddleName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", primaryPhone='" + getPrimaryPhone() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", dateOfBirth='" + getDateOfBirth() + "'" +
+            ", isActive='" + getIsActive() + "'" +
+            "}";
     }
 }
+
