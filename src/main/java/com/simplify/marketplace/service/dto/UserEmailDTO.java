@@ -1,0 +1,39 @@
+package com.simplify.marketplace.service.dto;
+
+import java.io.Serializable;
+import java.util.Objects;
+import javax.validation.constraints.*;
+import lombok.Data;
+import java.time.LocalDate;
+/**
+ * A DTO for the {@link com.simplify.marketplace.domain.UserEmail} entity.
+ */
+@Data
+public class UserEmailDTO implements Serializable {
+
+    private Long id;
+
+    @NotNull
+    @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
+    private String email;
+
+    private Boolean isActive;
+
+    private Boolean isPrimary;
+
+    private String tag;
+
+    private CustomUserDTO customUser;
+
+    private String createdBy;
+
+    private LocalDate createdAt;
+    
+    private String updatedBy;
+    
+    private LocalDate updatedAt;
+    
+
+
+   
+}
