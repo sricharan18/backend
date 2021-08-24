@@ -33,6 +33,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import com.simplify.marketplace.domain.User;
 
 /**
  * REST controller for managing users.
@@ -131,6 +132,15 @@ public class UserResource {
                 .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
+    }
+
+    @GetMapping("/users/authenticate/{email}")
+    public String getUserOtp(@PathVariable String  email) {
+        log.debug("REST request to get otp for an user");
+        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(email);
+        if (existingUser == null)
+            return null;
+        return existingUser.get().getActivationKey();
     }
 
     /**

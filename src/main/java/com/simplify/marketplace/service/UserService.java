@@ -53,6 +53,15 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    private static String generateOTP() 
+    { 
+        Random random = new Random(); 
+        String ActivationKey=""; 
+        for(int i = 0; i< 4 ; i++) { 
+            ActivationKey+= random.nextInt(10);} 
+        return ActivationKey;
+    }
+    
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository
@@ -135,7 +144,7 @@ public class UserService {
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        newUser.setActivationKey(generateOTP());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
