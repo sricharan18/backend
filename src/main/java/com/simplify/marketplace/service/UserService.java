@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.security.RandomUtil;
+
 
 /**
  * Service class for managing users.
@@ -100,7 +100,7 @@ public class UserService {
             .filter(User::isActivated)
             .map(
                 user -> {
-                    user.setResetKey(RandomUtil.generateResetKey());
+                    user.setResetKey(generateOTP());
                     user.setResetDate(Instant.now());
                     this.clearUserCaches(user);
                     return user;
@@ -178,11 +178,11 @@ public class UserService {
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword = passwordEncoder.encode(generateOTP());
         user.setPassword(encryptedPassword);
-        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetKey(generateOTP());
         user.setResetDate(Instant.now());
-        user.setActivated(true);
+        user.setActivated(false);
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO
                 .getAuthorities()

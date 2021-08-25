@@ -108,8 +108,9 @@ public class UserResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    // @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<User> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
 
@@ -133,15 +134,28 @@ public class UserResource {
                 .body(newUser);
         }
     }
-
-    @GetMapping("/users/authenticate/{email}")
-    public String getUserOtp(@PathVariable String  email) {
-        log.debug("REST request to get otp for an user");
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(email);
-        if (existingUser == null)
-            return null;
-        return existingUser.get().getActivationKey();
+   
+    @PostMapping("/users/authenticate")
+    public ResponseEntity<Boolean> VadlidatingOtp( @RequestBody Map<String, String> map) throws URISyntaxException {
+        Boolean check=false;
+        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(map.get("email"));
+        if (!userRepository.findOneByEmailIgnoreCase(map.get("email")).isPresent()) {
+            throw new BadRequestAlertException("A new user cannot get Otp wihtout using email", "userManagement", "enter email");
+        } else {
+            
+            if(existingUser.get().getResetKey().equals(map.get("otp"))){
+                existingUser.get().setActivated(true);
+                check=existingUser.get().isActivated();
+                userRepository.save(existingUser.get());
+               
+            }
+            return ResponseEntity
+                .created(new URI("/api/admin/users/authentiacte"))
+                .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", existingUser.get().getLogin()))
+                .body(check);
+        }
     }
+
 
     /**
      * {@code PUT /admin/users} : Updates an existing User.
