@@ -53,7 +53,7 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
-    private static String generateOTP() 
+    public static String generateOTP() 
     { 
         Random random = new Random(); 
         String ActivationKey=""; 
@@ -180,7 +180,7 @@ public class UserService {
         }
         String encryptedPassword = passwordEncoder.encode(generateOTP());
         user.setPassword(encryptedPassword);
-        user.setResetKey(generateOTP());
+        user.setActivationKey(generateOTP());
         user.setResetDate(Instant.now());
         user.setActivated(false);
         if (userDTO.getAuthorities() != null) {

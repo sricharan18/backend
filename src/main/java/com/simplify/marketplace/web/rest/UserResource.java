@@ -113,41 +113,51 @@ public class UserResource {
     // @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<User> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
+        User newUser;
 
-        if (userDTO.getId() != null) {
-            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
+        if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             // Lowercase the user login before comparing with database
-        } else if (userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).isPresent()) {
-            throw new LoginAlreadyUsedException();
-        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
-            throw new EmailAlreadyUsedException();
-        } else {
-            // userDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-            // userDTO.setlastModifiedBy(userService.getUserWithAuthorities().get().getId()+"");
-            // userDTO.setlastModifiedDate(LocalDate.now());
-            // userDTO.setcreatedDate(LocalDate.now());
-            User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
-            return ResponseEntity
-                .created(new URI("/api/admin/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))
-                .body(newUser);
-        }
+            newUser =userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).get();
+            if (!newUser.isActivated()){ 
+                // SignUp Resend Condition 
+                System.out.println("\n\n\n\n\nI'm in resend\n\n\n\n\n");               
+                mailService.sendActivationEmail(newUser);
+    
+            } else{
+                //Login Condition 
+                newUser.setResetKey(userService.generateOTP());
+                userRepository.save(newUser);
+                System.out.println("\n\n\n\n\nhello I'm in login condition"+newUser.getResetKey()+"hello\n\n\n\n\n");
+                mailService.sendCreationEmail(newUser);
+            }
+        }else {
+            //Register Condition
+            System.out.println("\n\n\n\n\nI'm in register\n\n\n\n\n");
+            newUser = userService.createUser(userDTO);
+            mailService.sendActivationEmail(newUser);
+        }return ResponseEntity
+            .created(new URI("/api/admin/users/" + newUser.getLogin()))
+            .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))
+            .body(newUser);
     }
    
     @PostMapping("/users/authenticate")
     public ResponseEntity<Boolean> VadlidatingOtp( @RequestBody Map<String, String> map) throws URISyntaxException {
         Boolean check=false;
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(map.get("email"));
+        Optional<User> existingUser;
         if (!userRepository.findOneByEmailIgnoreCase(map.get("email")).isPresent()) {
             throw new BadRequestAlertException("A new user cannot get Otp wihtout using email", "userManagement", "enter email");
         } else {
-            
-            if(existingUser.get().getResetKey().equals(map.get("otp"))){
-                existingUser.get().setActivated(true);
-                check=existingUser.get().isActivated();
-                userRepository.save(existingUser.get());
-               
+            existingUser = userRepository.findOneByEmailIgnoreCase(map.get("email"));
+            if( !existingUser.get().isActivated() ){
+                if (existingUser.get().getActivationKey().equals(map.get("otp"))){
+                    existingUser.get().setActivated(true);
+                    check=existingUser.get().isActivated();
+                    userRepository.save(existingUser.get());
+                }  
+            }else{
+                if(existingUser.get().getResetKey().equals(map.get("otp")))
+                    check=true;
             }
             return ResponseEntity
                 .created(new URI("/api/admin/users/authentiacte"))
