@@ -49,6 +49,19 @@ public class Worker implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_at")
+    private LocalDate updatedAt;
+
     @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
