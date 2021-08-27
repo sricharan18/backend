@@ -2,7 +2,10 @@ package com.simplify.marketplace.web.rest;
 
 import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
+import com.simplify.marketplace.domain.ElasticWorker;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.JobPreferenceRepository;
+import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.JobPreferenceService;
 import com.simplify.marketplace.service.dto.JobPreferenceDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
@@ -13,6 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +41,13 @@ public class JobPreferenceResource {
     private final Logger log = LoggerFactory.getLogger(JobPreferenceResource.class);
 
     private static final String ENTITY_NAME = "jobPreference";
+    
+    @Autowired
+    ESearchWorkerRepository rep1;
+	@Autowired
+	RabbitTemplate rabbit_msg;
+	@Autowired
+	WorkerRepository wrepo;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -68,6 +80,15 @@ public class JobPreferenceResource {
         jobPreferenceDTO.setUpdatedAt(LocalDate.now());
         jobPreferenceDTO.setCreatedAt(LocalDate.now());
         JobPreferenceDTO result = jobPreferenceService.save(jobPreferenceDTO);
+        
+        
+        String Workerid=jobPreferenceDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker=rep1.findById(Workerid).get();
+        elasticworker.setJobPreferences(jobPreferenceService.getJobPreferences(result));
+        
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
+        
+        
         return ResponseEntity
             .created(new URI("/api/job-preferences/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

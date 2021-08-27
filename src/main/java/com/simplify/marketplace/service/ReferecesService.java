@@ -1,7 +1,10 @@
 package com.simplify.marketplace.service;
 
+import com.simplify.marketplace.domain.Refereces;
 import com.simplify.marketplace.service.dto.ReferecesDTO;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -47,4 +50,5 @@ public interface ReferecesService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    Set<Refereces> getRefereces(ReferecesDTO referecesDTO);
 }

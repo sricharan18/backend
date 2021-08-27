@@ -2,6 +2,9 @@ package com.simplify.marketplace.web.rest;
 
 import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
+import com.simplify.marketplace.domain.ElasticWorker;
+import com.simplify.marketplace.domain.File;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.FileRepository;
 import com.simplify.marketplace.service.FileService;
 import com.simplify.marketplace.service.dto.FileDTO;
@@ -11,8 +14,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +39,11 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class FileResource {
     private UserService userService;
+    
+    @Autowired
+    ESearchWorkerRepository rep1;
+	@Autowired
+	RabbitTemplate rabbit_msg;
 
     private final Logger log = LoggerFactory.getLogger(FileResource.class);
 
@@ -67,7 +79,15 @@ public class FileResource {
         fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         fileDTO.setUpdatedAt(LocalDate.now());
         fileDTO.setCreatedAt(LocalDate.now());
+        
+        
         FileDTO result = fileService.save(fileDTO);
+        String Workerid=fileDTO.getWorker().getId().toString();
+        ElasticWorker e=rep1.findById(Workerid).get();
+        Set<File> files=fileService.insertElasticSearch(result);
+        e.setFiles(files);
+
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", e);
         return ResponseEntity
             .created(new URI("/api/files/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

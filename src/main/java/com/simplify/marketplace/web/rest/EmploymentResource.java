@@ -2,7 +2,10 @@ package com.simplify.marketplace.web.rest;
 
 import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
+import com.simplify.marketplace.domain.ElasticWorker;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.EmploymentRepository;
+import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.EmploymentService;
 import com.simplify.marketplace.service.dto.EmploymentDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
@@ -13,6 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +37,12 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class EmploymentResource {
     private UserService userService;
+    @Autowired
+    ESearchWorkerRepository rep1;
+	@Autowired
+	RabbitTemplate rabbit_msg;
+	@Autowired
+	WorkerRepository wrepo;
 
     private final Logger log = LoggerFactory.getLogger(EmploymentResource.class);
 
@@ -67,7 +78,16 @@ public class EmploymentResource {
         employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         employmentDTO.setUpdatedAt(LocalDate.now());
         employmentDTO.setCreatedAt(LocalDate.now());
+        
+        
         EmploymentDTO result = employmentService.save(employmentDTO);
+        
+        String Workerid=employmentDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker=rep1.findById(Workerid).get();
+        elasticworker.setEmployments(employmentService.getSetOfEmployment(result));
+
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
+        
         return ResponseEntity
             .created(new URI("/api/employments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

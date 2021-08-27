@@ -2,6 +2,8 @@ package com.simplify.marketplace.web.rest;
 
 import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
+import com.simplify.marketplace.domain.ElasticWorker;
+import com.simplify.marketplace.domain.Worker;
 import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.WorkerService;
 import com.simplify.marketplace.service.dto.WorkerDTO;
@@ -15,6 +17,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +38,11 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class WorkerResource {
     private UserService userService;
+    @Autowired
+    RabbitTemplate rabbit_msg;
+
+    @Autowired 
+    WorkerRepository workerRepo;
 
     private final Logger log = LoggerFactory.getLogger(WorkerResource.class);
 
@@ -70,6 +79,25 @@ public class WorkerResource {
         workerDTO.setUpdatedAt(LocalDate.now());
         workerDTO.setCreatedAt(LocalDate.now());
         WorkerDTO result = workerService.save(workerDTO);
+ ElasticWorker ew = new ElasticWorker();
+        
+        Worker arr = workerRepo.findOneWithEagerRelationships(result.getId()).get();
+        ew.setId(result.getId().toString());
+        ew.setFirstName(arr.getFirstName());
+        ew.setMiddleName(arr.getMiddleName());
+        ew.setLastName(arr.getLastName());
+        ew.setPrimaryPhone(arr.getPrimaryPhone());
+        ew.setDescription(arr.getDescription());
+        ew.setDateOfBirth(arr.getDateOfBirth());
+        ew.setIsActive(arr.getIsActive());
+        ew.setSkills(arr.getSkills());
+        ew.setCustomUser(arr.getCustomUser());
+        
+        
+        
+        
+        
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", ew);
         return ResponseEntity
             .created(new URI("/api/workers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

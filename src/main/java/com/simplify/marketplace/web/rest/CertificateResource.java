@@ -1,8 +1,11 @@
 package com.simplify.marketplace.web.rest;
 
 import com.simplify.marketplace.service.UserService;
-import java.time.LocalDate;  
+import java.time.LocalDate;
+
+import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.repository.CertificateRepository;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.service.CertificateService;
 import com.simplify.marketplace.service.dto.CertificateDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
@@ -13,6 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +37,11 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class CertificateResource {
     private UserService userService;
+    @Autowired
+	ESearchWorkerRepository wrep;
+	
+	@Autowired
+	RabbitTemplate rabbit_msg;
 
     private final Logger log = LoggerFactory.getLogger(CertificateResource.class);
 
@@ -68,6 +78,12 @@ public class CertificateResource {
         certificateDTO.setUpdatedAt(LocalDate.now());
         certificateDTO.setCreatedAt(LocalDate.now());
         CertificateDTO result = certificateService.save(certificateDTO);
+        
+        String workerid=certificateDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker=wrep.findById(workerid).get();
+        elasticworker.setCertificates(certificateService.insertElasticSearch(result));
+        
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
         return ResponseEntity
             .created(new URI("/api/certificates/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

@@ -2,7 +2,10 @@ package com.simplify.marketplace.web.rest;
 
 import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
+import com.simplify.marketplace.domain.ElasticWorker;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.EducationRepository;
+import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.EducationService;
 import com.simplify.marketplace.service.dto.EducationDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
@@ -13,6 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +38,12 @@ import tech.jhipster.web.util.ResponseUtil;
 public class EducationResource {
     private UserService userService;
 
+    @Autowired
+    ESearchWorkerRepository rep1;
+	@Autowired
+	RabbitTemplate rabbit_msg;
+	@Autowired
+	WorkerRepository wrepo;
     private final Logger log = LoggerFactory.getLogger(EducationResource.class);
 
     private static final String ENTITY_NAME = "education";
@@ -67,7 +78,15 @@ public class EducationResource {
         educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         educationDTO.setUpdatedAt(LocalDate.now());
         educationDTO.setCreatedAt(LocalDate.now());
-        EducationDTO result = educationService.save(educationDTO);
+      
+        
+   EducationDTO result = educationService.save(educationDTO);
+        
+        String Workerid=educationDTO.getWorker().getId().toString();
+        ElasticWorker e=rep1.findById(Workerid).get();
+        e.setEducations(educationService.insertElasticSearch(result));
+
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", e);
         return ResponseEntity
             .created(new URI("/api/educations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -102,8 +121,9 @@ public class EducationResource {
         }
         educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         educationDTO.setUpdatedAt(LocalDate.now());
-
         EducationDTO result = educationService.save(educationDTO);
+
+     
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, educationDTO.getId().toString()))

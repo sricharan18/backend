@@ -120,19 +120,19 @@ public class UserResource {
             newUser =userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).get();
             if (!newUser.isActivated()){ 
                 // SignUp Resend Condition 
-                System.out.println("\n\n\n\n\nI'm in resend\n\n\n\n\n");               
+                //System.out.println("\n\n\n\n\nI'm in resend\n\n\n\n\n");               
                 mailService.sendActivationEmail(newUser);
     
             } else{
                 //Login Condition 
                 newUser.setResetKey(userService.generateOTP());
                 userRepository.save(newUser);
-                System.out.println("\n\n\n\n\nhello I'm in login condition"+newUser.getResetKey()+"hello\n\n\n\n\n");
+                //System.out.println("\n\n\n\n\nhello I'm in login condition"+newUser.getResetKey()+"hello\n\n\n\n\n");
                 mailService.sendCreationEmail(newUser);
             }
         }else {
             //Register Condition
-            System.out.println("\n\n\n\n\nI'm in register\n\n\n\n\n");
+            //System.out.println("\n\n\n\n\nI'm in register\n\n\n\n\n");
             newUser = userService.createUser(userDTO);
             mailService.sendActivationEmail(newUser);
         }return ResponseEntity

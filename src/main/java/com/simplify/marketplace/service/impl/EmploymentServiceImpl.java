@@ -1,13 +1,21 @@
 package com.simplify.marketplace.service.impl;
 
+import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.domain.Employment;
+import com.simplify.marketplace.repository.ClientRepository;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.EmploymentRepository;
+import com.simplify.marketplace.repository.LocationRepository;
+import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.EmploymentService;
 import com.simplify.marketplace.service.dto.EmploymentDTO;
 import com.simplify.marketplace.service.mapper.EmploymentMapper;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +33,16 @@ public class EmploymentServiceImpl implements EmploymentService {
     private final EmploymentRepository employmentRepository;
 
     private final EmploymentMapper employmentMapper;
+    @Autowired
+	WorkerRepository workerrepo;
+	
+	@Autowired
+    ESearchWorkerRepository elasticworkerrepo;
+	@Autowired
+	LocationRepository locRepo;
+	
+	@Autowired
+	ClientRepository clientRepo;
 
     public EmploymentServiceImpl(EmploymentRepository employmentRepository, EmploymentMapper employmentMapper) {
         this.employmentRepository = employmentRepository;
@@ -74,5 +92,35 @@ public class EmploymentServiceImpl implements EmploymentService {
     public void delete(Long id) {
         log.debug("Request to delete Employment : {}", id);
         employmentRepository.deleteById(id);
+    }
+    public Set<Employment> getSetOfEmployment(EmploymentDTO employmentDTO)
+    {
+    	
+        String Workerid=employmentDTO.getWorker().getId().toString();
+    	
+    	ElasticWorker elasticWorker=elasticworkerrepo.findById(Workerid).get();
+    	
+    	Employment employment=new Employment();
+    	
+    	
+    	employment.setCompanyName(employmentDTO.getCompanyName());
+    	employment.setDescription(employmentDTO.getDescription());
+    	employment.setEndDate(employmentDTO.getEndDate());
+    	employment.setId(employmentDTO.getId());
+    	employment.setIsCurrent(employmentDTO.getIsCurrent());
+    	employment.setJobTitle(employmentDTO.getJobTitle());
+    	employment.setLastSalary(employmentDTO.getLastSalary());
+    	employment.setStartDate(employmentDTO.getStartDate());
+    	
+    	employment.setCompany(clientRepo.findById(employmentDTO.getCompany().getId()).get());
+    	
+    	//employment.setLocations(locRepo.findById(employmentDTO.get));
+    	
+    	employment.setWorker(workerrepo.findById(employmentDTO.getWorker().getId()).get());
+   
+        Set<Employment> set=elasticWorker.getEmployments();
+        set.add(employment);
+        
+    	return set;
     }
 }

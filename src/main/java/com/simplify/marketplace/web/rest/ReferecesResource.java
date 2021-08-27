@@ -2,7 +2,10 @@ package com.simplify.marketplace.web.rest;
 
 import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
+import com.simplify.marketplace.domain.ElasticWorker;
+import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.ReferecesRepository;
+import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.ReferecesService;
 import com.simplify.marketplace.service.dto.ReferecesDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
@@ -15,6 +18,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +43,12 @@ public class ReferecesResource {
     private final Logger log = LoggerFactory.getLogger(ReferecesResource.class);
 
     private static final String ENTITY_NAME = "refereces";
+    @Autowired
+    ESearchWorkerRepository rep1;
+	@Autowired
+	RabbitTemplate rabbit_msg;
+	@Autowired
+	WorkerRepository wrepo;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -70,6 +81,12 @@ public class ReferecesResource {
         referecesDTO.setUpdatedAt(LocalDate.now());
         referecesDTO.setCreatedAt(LocalDate.now());
         ReferecesDTO result = referecesService.save(referecesDTO);
+        
+        String Workerid=referecesDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker=rep1.findById(Workerid).get();
+        elasticworker.setRefereces(referecesService.getRefereces(result));
+        
+        rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
         return ResponseEntity
             .created(new URI("/api/refereces/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
