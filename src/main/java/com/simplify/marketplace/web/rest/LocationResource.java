@@ -1,13 +1,13 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.LocationRepository;
 import com.simplify.marketplace.service.LocationService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.LocationDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class LocationResource {
 
     private final LocationRepository locationRepository;
 
-    public LocationResource(LocationService locationService, LocationRepository locationRepository,UserService userService) {
+    public LocationResource(LocationService locationService, LocationRepository locationRepository, UserService userService) {
         this.locationService = locationService;
         this.locationRepository = locationRepository;
         this.userService = userService;
@@ -65,8 +65,8 @@ public class LocationResource {
         if (locationDTO.getId() != null) {
             throw new BadRequestAlertException("A new location cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        locationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         locationDTO.setUpdatedAt(LocalDate.now());
         locationDTO.setCreatedAt(LocalDate.now());
         LocationDTO result = locationService.save(locationDTO);
@@ -102,7 +102,7 @@ public class LocationResource {
         if (!locationRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         locationDTO.setUpdatedAt(LocalDate.now());
         LocationDTO result = locationService.save(locationDTO);
         return ResponseEntity
@@ -138,7 +138,7 @@ public class LocationResource {
         if (!locationRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         locationDTO.setUpdatedAt(LocalDate.now());
         Optional<LocationDTO> result = locationService.partialUpdate(locationDTO);
 

@@ -4,7 +4,6 @@ import com.simplify.marketplace.domain.Portfolio;
 import com.simplify.marketplace.service.dto.PortfolioDTO;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

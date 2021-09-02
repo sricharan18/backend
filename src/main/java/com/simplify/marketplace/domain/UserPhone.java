@@ -46,10 +46,11 @@ public class UserPhone implements Serializable {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
+
     @ManyToOne
     private User user;
 
-        public UserPhone id(Long id) {
+    public UserPhone id(Long id) {
         this.id = id;
         return this;
     }
@@ -98,5 +99,4 @@ public class UserPhone implements Serializable {
         this.updatedAt = updatedAt;
         return this;
     }
-  
 }

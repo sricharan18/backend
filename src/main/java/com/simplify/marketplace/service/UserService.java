@@ -23,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * Service class for managing users.
  */
@@ -53,15 +52,15 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
-    public static String generateOTP() 
-    { 
-        Random random = new Random(); 
-        String ActivationKey=""; 
-        for(int i = 0; i< 4 ; i++) { 
-            ActivationKey+= random.nextInt(10);} 
+    public static String generateOTP() {
+        Random random = new Random();
+        String ActivationKey = "";
+        for (int i = 0; i < 4; i++) {
+            ActivationKey += random.nextInt(10);
+        }
         return ActivationKey;
     }
-    
+
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository

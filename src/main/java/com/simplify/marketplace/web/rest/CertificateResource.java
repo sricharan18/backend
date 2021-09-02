@@ -1,16 +1,15 @@
 package com.simplify.marketplace.web.rest;
 
-import com.simplify.marketplace.service.UserService;
-import java.time.LocalDate;
-
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.repository.CertificateRepository;
 import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.service.CertificateService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.CertificateDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,12 +35,14 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class CertificateResource {
+
     private UserService userService;
+
     @Autowired
-	ESearchWorkerRepository wrep;
-	
-	@Autowired
-	RabbitTemplate rabbit_msg;
+    ESearchWorkerRepository wrep;
+
+    @Autowired
+    RabbitTemplate rabbit_msg;
 
     private final Logger log = LoggerFactory.getLogger(CertificateResource.class);
 
@@ -54,7 +55,11 @@ public class CertificateResource {
 
     private final CertificateRepository certificateRepository;
 
-    public CertificateResource(CertificateService certificateService, CertificateRepository certificateRepository,UserService userService) {
+    public CertificateResource(
+        CertificateService certificateService,
+        CertificateRepository certificateRepository,
+        UserService userService
+    ) {
         this.certificateService = certificateService;
         this.certificateRepository = certificateRepository;
         this.userService = userService;
@@ -73,16 +78,16 @@ public class CertificateResource {
         if (certificateDTO.getId() != null) {
             throw new BadRequestAlertException("A new certificate cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        certificateDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         certificateDTO.setUpdatedAt(LocalDate.now());
         certificateDTO.setCreatedAt(LocalDate.now());
         CertificateDTO result = certificateService.save(certificateDTO);
 
-        String workerid=certificateDTO.getWorker().getId().toString();
-        ElasticWorker elasticworker=wrep.findById(workerid).get();
+        String workerid = certificateDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker = wrep.findById(workerid).get();
         elasticworker.setCertificates(certificateService.insertElasticSearch(result));
-        
+
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
         return ResponseEntity
             .created(new URI("/api/certificates/" + result.getId()))
@@ -117,7 +122,7 @@ public class CertificateResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         certificateDTO.setUpdatedAt(LocalDate.now());
         CertificateDTO result = certificateService.save(certificateDTO);
         return ResponseEntity
@@ -153,9 +158,8 @@ public class CertificateResource {
         if (!certificateRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         certificateDTO.setUpdatedAt(LocalDate.now());
-
 
         Optional<CertificateDTO> result = certificateService.partialUpdate(certificateDTO);
 

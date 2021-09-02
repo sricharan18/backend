@@ -28,7 +28,6 @@ public class UserJWTController {
     public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
-
     }
 
     @PostMapping("/authenticate")

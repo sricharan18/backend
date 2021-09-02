@@ -1,5 +1,7 @@
 package com.simplify.marketplace.service.dto;
+
 import lombok.Data;
+
 /**
  * A DTO representing a password change required data - current and new password.
  */
@@ -17,5 +19,4 @@ public class PasswordChangeDTO {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
     }
-
 }

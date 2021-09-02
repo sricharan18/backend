@@ -5,11 +5,12 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Data;
+
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Client} entity.
  */
- @Data
- public class ClientDTO implements Serializable {
+@Data
+public class ClientDTO implements Serializable {
 
     private Long id;
 
@@ -35,5 +36,4 @@ import lombok.Data;
     private String updatedBy;
 
     private LocalDate updatedAt;
-    
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Data;
+
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.JobPreference} entity.
  */
@@ -48,8 +49,4 @@ public class JobPreferenceDTO implements Serializable {
     private String updatedBy;
 
     private LocalDate updatedAt;
-
-
-
-   
 }

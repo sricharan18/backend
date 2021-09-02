@@ -10,7 +10,6 @@ import com.simplify.marketplace.service.dto.ReferecesDTO;
 import com.simplify.marketplace.service.mapper.ReferecesMapper;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +30,13 @@ public class ReferecesServiceImpl implements ReferecesService {
     private final ReferecesRepository referecesRepository;
 
     private final ReferecesMapper referecesMapper;
+
     @Autowired
-	WorkerRepository workerRepo;
-	
-	@Autowired
+    WorkerRepository workerRepo;
+
+    @Autowired
     ESearchWorkerRepository elasticWorkerRepo;
+
     public ReferecesServiceImpl(ReferecesRepository referecesRepository, ReferecesMapper referecesMapper) {
         this.referecesRepository = referecesRepository;
         this.referecesMapper = referecesMapper;
@@ -85,26 +86,25 @@ public class ReferecesServiceImpl implements ReferecesService {
         log.debug("Request to delete Refereces : {}", id);
         referecesRepository.deleteById(id);
     }
-    public Set<Refereces> getRefereces(ReferecesDTO refercesDTO)
-    {
-        String Workerid=refercesDTO.getWorker().getId().toString();
-    	
-    	ElasticWorker elasticworker=elasticWorkerRepo.findById(Workerid).get();
-    	
-    	Refereces refereces=new Refereces();
-    	
-    	refereces.setId(refercesDTO.getId());
-    	refereces.setName(refercesDTO.getName());
-    	refereces.setEmail(refercesDTO.getEmail());
-    	refereces.setPhone(refercesDTO.getPhone());
-    	refereces.setProfileLink(refercesDTO.getProfileLink());
-    	refereces.setRelationType(refercesDTO.getRelationType());
-    	refereces.setWorker(workerRepo.findById(refercesDTO.getWorker().getId()).get());
-    	
-    	Set<Refereces> set=elasticworker.getRefereces();
-    	set.add(refereces);
-    	
 
-    	return set;
+    public Set<Refereces> getRefereces(ReferecesDTO refercesDTO) {
+        String Workerid = refercesDTO.getWorker().getId().toString();
+
+        ElasticWorker elasticworker = elasticWorkerRepo.findById(Workerid).get();
+
+        Refereces refereces = new Refereces();
+
+        refereces.setId(refercesDTO.getId());
+        refereces.setName(refercesDTO.getName());
+        refereces.setEmail(refercesDTO.getEmail());
+        refereces.setPhone(refercesDTO.getPhone());
+        refereces.setProfileLink(refercesDTO.getProfileLink());
+        refereces.setRelationType(refercesDTO.getRelationType());
+        refereces.setWorker(workerRepo.findById(refercesDTO.getWorker().getId()).get());
+
+        Set<Refereces> set = elasticworker.getRefereces();
+        set.add(refereces);
+
+        return set;
     }
 }

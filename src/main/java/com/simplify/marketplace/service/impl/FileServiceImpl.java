@@ -10,7 +10,6 @@ import com.simplify.marketplace.service.dto.FileDTO;
 import com.simplify.marketplace.service.mapper.FileMapper;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +30,12 @@ public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 
     private final FileMapper fileMapper;
+
     @Autowired
     ESearchWorkerRepository rep1;
-	
-	@Autowired
-	WorkerRepository wrepo;
+
+    @Autowired
+    WorkerRepository wrepo;
 
     public FileServiceImpl(FileRepository fileRepository, FileMapper fileMapper) {
         this.fileRepository = fileRepository;
@@ -86,38 +86,35 @@ public class FileServiceImpl implements FileService {
         log.debug("Request to delete File : {}", id);
         fileRepository.deleteById(id);
     }
-    public Set<File> insertElasticSearch(FileDTO fileDTO)
-    {
-    	File file=new File();
-    	
-        String Workerid=fileDTO.getWorker().getId().toString();
-    	
-    	ElasticWorker e=rep1.findById(Workerid).get();
-    	
-    	file.setId(fileDTO.getId());
-    	file.setFileformat(fileDTO.getFileformat());
-    	file.setFiletype(fileDTO.getFiletype());
-    	file.setIsDefault(fileDTO.getIsDefault());
-    	file.setIsProfilePic(fileDTO.getIsProfilePic());
-    	file.setIsResume(fileDTO.getIsResume());
-    	file.setPath(fileDTO.getPath());
-    	file.setTag(fileDTO.getTag());
-    	file.setWorker(wrepo.findById(fileDTO.getWorker().getId()).get());
-    	
-    	
-//        file.setCreatedAt(fileDTO.getCreatedAt());
-//        file.setCreatedBy(fileDTO.getCreatedBy());
-//        file.setUpdatedAt(fileDTO.getUpdatedAt());
-//        file.setUpdatedBy(fileDTO.getUpdatedBy());
-//        
-//        System.out.println("\n\n\n\n\n\n\n\n" + fileDTO.getCreatedAt()+ "\n\n\n\n\n\n\n\n");
-        
-        
-        Set<File> filesSet=e.getFiles();
-        
+
+    public Set<File> insertElasticSearch(FileDTO fileDTO) {
+        File file = new File();
+
+        String Workerid = fileDTO.getWorker().getId().toString();
+
+        ElasticWorker e = rep1.findById(Workerid).get();
+
+        file.setId(fileDTO.getId());
+        file.setFileformat(fileDTO.getFileformat());
+        file.setFiletype(fileDTO.getFiletype());
+        file.setIsDefault(fileDTO.getIsDefault());
+        file.setIsProfilePic(fileDTO.getIsProfilePic());
+        file.setIsResume(fileDTO.getIsResume());
+        file.setPath(fileDTO.getPath());
+        file.setTag(fileDTO.getTag());
+        file.setWorker(wrepo.findById(fileDTO.getWorker().getId()).get());
+
+        //        file.setCreatedAt(fileDTO.getCreatedAt());
+        //        file.setCreatedBy(fileDTO.getCreatedBy());
+        //        file.setUpdatedAt(fileDTO.getUpdatedAt());
+        //        file.setUpdatedBy(fileDTO.getUpdatedBy());
+        //
+        //        System.out.println("\n\n\n\n\n\n\n\n" + fileDTO.getCreatedAt()+ "\n\n\n\n\n\n\n\n");
+
+        Set<File> filesSet = e.getFiles();
+
         filesSet.add(file);
-        
+
         return filesSet;
-    	
     }
 }

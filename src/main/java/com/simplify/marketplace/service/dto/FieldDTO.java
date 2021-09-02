@@ -2,14 +2,15 @@ package com.simplify.marketplace.service.dto;
 
 import com.simplify.marketplace.domain.enumeration.FieldType;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Data;
-import java.time.LocalDate;
+
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Field} entity.
  */
- @Data
- public class FieldDTO implements Serializable {
+@Data
+public class FieldDTO implements Serializable {
 
     private Long id;
 
@@ -30,5 +31,4 @@ import java.time.LocalDate;
     private String updatedBy;
 
     private LocalDate updatedAt;
-    
 }

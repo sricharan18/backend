@@ -43,9 +43,7 @@ public class SkillsMaster implements Serializable {
     @ManyToMany(mappedBy = "skills")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(
-        value = {
-            "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
-        },
+        value = { "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills" },
         allowSetters = true
     )
     private Set<Worker> workers = new HashSet<>();

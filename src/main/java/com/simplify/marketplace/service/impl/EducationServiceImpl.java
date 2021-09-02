@@ -12,7 +12,6 @@ import com.simplify.marketplace.service.dto.EducationDTO;
 import com.simplify.marketplace.service.mapper.EducationMapper;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +32,15 @@ public class EducationServiceImpl implements EducationService {
     private final EducationRepository educationRepository;
 
     private final EducationMapper educationMapper;
-    
+
     @Autowired
     SubjectMasterRepository sub;
-    
+
     @Autowired
-	WorkerRepository wrepo;
-	
-	@Autowired
+    WorkerRepository wrepo;
+
+    @Autowired
     ESearchWorkerRepository rep1;
-	
 
     public EducationServiceImpl(EducationRepository educationRepository, EducationMapper educationMapper) {
         this.educationRepository = educationRepository;
@@ -93,14 +91,14 @@ public class EducationServiceImpl implements EducationService {
         log.debug("Request to delete Education : {}", id);
         educationRepository.deleteById(id);
     }
-    public Set<Education> insertElasticSearch(EducationDTO educationDTO)
-    {
-    	String Workerid=educationDTO.getWorker().getId().toString();
-    	
-    	ElasticWorker e=rep1.findById(Workerid).get();
 
-        Education ed=new Education();
-         
+    public Set<Education> insertElasticSearch(EducationDTO educationDTO) {
+        String Workerid = educationDTO.getWorker().getId().toString();
+
+        ElasticWorker e = rep1.findById(Workerid).get();
+
+        Education ed = new Education();
+
         ed.setId(educationDTO.getId());
         ed.setDegreeName(educationDTO.getDegreeName());
 
@@ -124,22 +122,22 @@ public class EducationServiceImpl implements EducationService {
 
         ed.setDescription(educationDTO.getDescription());
 
-        SubjectMaster major =sub.findById(educationDTO.getMajorSubject().getId()).get();
-//        major.setId(educationDTO.getMajorSubject().getId());
-//        major.setSubjectName(educationDTO.getMajorSubject().getSubjectName());
+        SubjectMaster major = sub.findById(educationDTO.getMajorSubject().getId()).get();
+        //        major.setId(educationDTO.getMajorSubject().getId());
+        //        major.setSubjectName(educationDTO.getMajorSubject().getSubjectName());
         ed.setMajorSubject(major);
 
-         SubjectMaster minor = sub.findById(educationDTO.getMinorSubject().getId()).get();
-//         minor.setId(educationDTO.getMinorSubject().getId());
-//         minor.setSubjectName(educationDTO.getMinorSubject().getSubjectName());
-         ed.setMinorSubject(minor);
+        SubjectMaster minor = sub.findById(educationDTO.getMinorSubject().getId()).get();
+        //         minor.setId(educationDTO.getMinorSubject().getId());
+        //         minor.setSubjectName(educationDTO.getMinorSubject().getSubjectName());
+        ed.setMinorSubject(minor);
 
-         ed.setWorker(wrepo.findById(educationDTO.getWorker().getId()).get());
+        ed.setWorker(wrepo.findById(educationDTO.getWorker().getId()).get());
 
-        Set<Education> s=e.getEducations();
+        Set<Education> s = e.getEducations();
 
         s.add(ed);
-    	
+
         return s;
     }
 }

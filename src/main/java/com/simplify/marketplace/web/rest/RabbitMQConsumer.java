@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMQConsumer {
 
-    
-
     ElasticWorker e;
 
     @Autowired
@@ -23,8 +21,6 @@ public class RabbitMQConsumer {
 
     @RabbitListener(queues = "queue1")
     public void comsume(ElasticWorker w) {
-
- 
         rep1.save(w);
     }
 }

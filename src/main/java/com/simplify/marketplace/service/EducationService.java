@@ -4,7 +4,6 @@ import com.simplify.marketplace.domain.Education;
 import com.simplify.marketplace.service.dto.EducationDTO;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -51,5 +50,5 @@ public interface EducationService {
      */
     void delete(Long id);
 
-    Set<Education> insertElasticSearch(EducationDTO educationdto);    
+    Set<Education> insertElasticSearch(EducationDTO educationdto);
 }

@@ -1,12 +1,12 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.config.Constants;
+import com.simplify.marketplace.domain.User;
 import com.simplify.marketplace.domain.User;
 import com.simplify.marketplace.repository.UserRepository;
 import com.simplify.marketplace.security.AuthoritiesConstants;
 import com.simplify.marketplace.service.MailService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.AdminUserDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
@@ -14,6 +14,7 @@ import com.simplify.marketplace.web.rest.errors.EmailAlreadyUsedException;
 import com.simplify.marketplace.web.rest.errors.LoginAlreadyUsedException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Collections;
 import javax.validation.Valid;
@@ -33,7 +34,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
-import com.simplify.marketplace.domain.User;
 
 /**
  * REST controller for managing users.
@@ -117,47 +117,46 @@ public class UserResource {
 
         if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             // Lowercase the user login before comparing with database
-            newUser =userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).get();
-            if (!newUser.isActivated()){ 
-                // SignUp Resend Condition 
-                //System.out.println("\n\n\n\n\nI'm in resend\n\n\n\n\n");               
+            newUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).get();
+            if (!newUser.isActivated()) {
+                // SignUp Resend Condition
+                //System.out.println("\n\n\n\n\nI'm in resend\n\n\n\n\n");
                 mailService.sendActivationEmail(newUser);
-    
-            } else{
-                //Login Condition 
+            } else {
+                //Login Condition
                 newUser.setResetKey(userService.generateOTP());
                 userRepository.save(newUser);
                 //System.out.println("\n\n\n\n\nhello I'm in login condition"+newUser.getResetKey()+"hello\n\n\n\n\n");
                 mailService.sendCreationEmail(newUser);
             }
-        }else {
+        } else {
             //Register Condition
             //System.out.println("\n\n\n\n\nI'm in register\n\n\n\n\n");
             newUser = userService.createUser(userDTO);
             mailService.sendActivationEmail(newUser);
-        }return ResponseEntity
+        }
+        return ResponseEntity
             .created(new URI("/api/admin/users/" + newUser.getLogin()))
             .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))
             .body(newUser);
     }
-   
+
     @PostMapping("/users/authenticate")
-    public ResponseEntity<Boolean> VadlidatingOtp( @RequestBody Map<String, String> map) throws URISyntaxException {
-        Boolean check=false;
+    public ResponseEntity<Boolean> VadlidatingOtp(@RequestBody Map<String, String> map) throws URISyntaxException {
+        Boolean check = false;
         Optional<User> existingUser;
         if (!userRepository.findOneByEmailIgnoreCase(map.get("email")).isPresent()) {
             throw new BadRequestAlertException("A new user cannot get Otp wihtout using email", "userManagement", "enter email");
         } else {
             existingUser = userRepository.findOneByEmailIgnoreCase(map.get("email"));
-            if( !existingUser.get().isActivated() ){
-                if (existingUser.get().getActivationKey().equals(map.get("otp"))){
+            if (!existingUser.get().isActivated()) {
+                if (existingUser.get().getActivationKey().equals(map.get("otp"))) {
                     existingUser.get().setActivated(true);
-                    check=existingUser.get().isActivated();
+                    check = existingUser.get().isActivated();
                     userRepository.save(existingUser.get());
-                }  
-            }else{
-                if(existingUser.get().getResetKey().equals(map.get("otp")))
-                    check=true;
+                }
+            } else {
+                if (existingUser.get().getResetKey().equals(map.get("otp"))) check = true;
             }
             return ResponseEntity
                 .created(new URI("/api/admin/users/authentiacte"))
@@ -165,7 +164,6 @@ public class UserResource {
                 .body(check);
         }
     }
-
 
     /**
      * {@code PUT /admin/users} : Updates an existing User.
@@ -188,8 +186,8 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         }
         // userDTO.setlastModifiedBy(userService.getUserWithAuthorities().get().getId()+"");
-            // userDTO.setlastModifiedDate(LocalDate.now());
-            
+        // userDTO.setlastModifiedDate(LocalDate.now());
+
         Optional<AdminUserDTO> updatedUser = userService.updateUser(userDTO);
 
         return ResponseUtil.wrapOrNotFound(

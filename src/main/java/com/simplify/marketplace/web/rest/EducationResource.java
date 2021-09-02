@@ -1,16 +1,16 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.EducationRepository;
 import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.EducationService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.EducationDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,14 +36,18 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class EducationResource {
+
     private UserService userService;
 
     @Autowired
     ESearchWorkerRepository rep1;
-	@Autowired
-	RabbitTemplate rabbit_msg;
-	@Autowired
-	WorkerRepository wrepo;
+
+    @Autowired
+    RabbitTemplate rabbit_msg;
+
+    @Autowired
+    WorkerRepository wrepo;
+
     private final Logger log = LoggerFactory.getLogger(EducationResource.class);
 
     private static final String ENTITY_NAME = "education";
@@ -55,7 +59,7 @@ public class EducationResource {
 
     private final EducationRepository educationRepository;
 
-    public EducationResource(EducationService educationService, EducationRepository educationRepository,UserService userService) {
+    public EducationResource(EducationService educationService, EducationRepository educationRepository, UserService userService) {
         this.educationService = educationService;
         this.educationRepository = educationRepository;
         this.userService = userService;
@@ -74,16 +78,15 @@ public class EducationResource {
         if (educationDTO.getId() != null) {
             throw new BadRequestAlertException("A new education cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        educationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        educationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         educationDTO.setUpdatedAt(LocalDate.now());
         educationDTO.setCreatedAt(LocalDate.now());
-      
-        
-   EducationDTO result = educationService.save(educationDTO);
-        
-        String Workerid=educationDTO.getWorker().getId().toString();
-        ElasticWorker e=rep1.findById(Workerid).get();
+
+        EducationDTO result = educationService.save(educationDTO);
+
+        String Workerid = educationDTO.getWorker().getId().toString();
+        ElasticWorker e = rep1.findById(Workerid).get();
         e.setEducations(educationService.insertElasticSearch(result));
 
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", e);
@@ -119,11 +122,10 @@ public class EducationResource {
         if (!educationRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         educationDTO.setUpdatedAt(LocalDate.now());
         EducationDTO result = educationService.save(educationDTO);
 
-     
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, educationDTO.getId().toString()))
@@ -157,7 +159,7 @@ public class EducationResource {
         if (!educationRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        educationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         educationDTO.setUpdatedAt(LocalDate.now());
 
         Optional<EducationDTO> result = educationService.partialUpdate(educationDTO);

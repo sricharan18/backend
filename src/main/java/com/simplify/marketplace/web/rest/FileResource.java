@@ -1,21 +1,20 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.domain.File;
 import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.FileRepository;
 import com.simplify.marketplace.service.FileService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.FileDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -38,12 +37,14 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class FileResource {
+
     private UserService userService;
-    
+
     @Autowired
     ESearchWorkerRepository rep1;
-	@Autowired
-	RabbitTemplate rabbit_msg;
+
+    @Autowired
+    RabbitTemplate rabbit_msg;
 
     private final Logger log = LoggerFactory.getLogger(FileResource.class);
 
@@ -56,7 +57,7 @@ public class FileResource {
 
     private final FileRepository fileRepository;
 
-    public FileResource(FileService fileService, FileRepository fileRepository,UserService userService) {
+    public FileResource(FileService fileService, FileRepository fileRepository, UserService userService) {
         this.fileService = fileService;
         this.fileRepository = fileRepository;
         this.userService = userService;
@@ -75,16 +76,15 @@ public class FileResource {
         if (fileDTO.getId() != null) {
             throw new BadRequestAlertException("A new file cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        fileDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         fileDTO.setUpdatedAt(LocalDate.now());
         fileDTO.setCreatedAt(LocalDate.now());
-        
-        
+
         FileDTO result = fileService.save(fileDTO);
-        String Workerid=fileDTO.getWorker().getId().toString();
-        ElasticWorker e=rep1.findById(Workerid).get();
-        Set<File> files=fileService.insertElasticSearch(result);
+        String Workerid = fileDTO.getWorker().getId().toString();
+        ElasticWorker e = rep1.findById(Workerid).get();
+        Set<File> files = fileService.insertElasticSearch(result);
         e.setFiles(files);
 
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", e);
@@ -118,7 +118,7 @@ public class FileResource {
         if (!fileRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         fileDTO.setUpdatedAt(LocalDate.now());
 
         FileDTO result = fileService.save(fileDTO);
@@ -155,7 +155,7 @@ public class FileResource {
         if (!fileRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        fileDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         fileDTO.setUpdatedAt(LocalDate.now());
         Optional<FileDTO> result = fileService.partialUpdate(fileDTO);
 

@@ -48,30 +48,13 @@ public interface ESearchWorkerRepository extends ElasticsearchRepository<Elastic
         "    }}"
     )
     public ArrayList<ElasticWorker> searchQuery(@Param("str") String parameter);
-    
-    
-    
-    @Query("{\r\n"
-            + "   \"match\":{\r\n"
-            + "     \"jobPreferences.engagementType\":\"?0\"\r\n"
-            + "     \r\n"
-            + "   }\r\n"
-            + "  }")
+
+    @Query("{\r\n" + "   \"match\":{\r\n" + "     \"jobPreferences.engagementType\":\"?0\"\r\n" + "     \r\n" + "   }\r\n" + "  }")
     public ArrayList<ElasticWorker> searchByEngagementType(String str);
-     
-    @Query("{\r\n"
-            + "   \"match\":{\r\n"
-            + "     \"jobPreferences.employmentType\":\"?0\"\r\n"
-            + "     \r\n"
-            + "   }\r\n"
-            + "  }")
+
+    @Query("{\r\n" + "   \"match\":{\r\n" + "     \"jobPreferences.employmentType\":\"?0\"\r\n" + "     \r\n" + "   }\r\n" + "  }")
     public ArrayList<ElasticWorker> searchByEmploymentType(String str);
-     
-    @Query("{\r\n"
-            + "   \"match\":{\r\n"
-            + "     \"jobPreferences.locationType\":\"?0\"\r\n"
-            + "     \r\n"
-            + "   }\r\n"
-            + "  }")
+
+    @Query("{\r\n" + "   \"match\":{\r\n" + "     \"jobPreferences.locationType\":\"?0\"\r\n" + "     \r\n" + "   }\r\n" + "  }")
     public ArrayList<ElasticWorker> searchBylocationType(String str);
 }

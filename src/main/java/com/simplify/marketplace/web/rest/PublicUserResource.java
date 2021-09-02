@@ -1,8 +1,8 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
 import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.UserDTO;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Collections;
 import org.slf4j.Logger;
@@ -31,7 +31,6 @@ public class PublicUserResource {
 
     public PublicUserResource(UserService userService) {
         this.userService = userService;
-
     }
 
     /**

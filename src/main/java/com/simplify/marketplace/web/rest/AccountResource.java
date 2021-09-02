@@ -1,7 +1,5 @@
 package com.simplify.marketplace.web.rest;
 
-// import com.simplify.marketplace.service.UserService;
-import java.time.LocalDate;  
 import com.simplify.marketplace.domain.User;
 import com.simplify.marketplace.repository.UserRepository;
 import com.simplify.marketplace.security.SecurityUtils;
@@ -13,6 +11,8 @@ import com.simplify.marketplace.service.dto.UserDTO;
 import com.simplify.marketplace.web.rest.errors.*;
 import com.simplify.marketplace.web.rest.vm.KeyAndPasswordVM;
 import com.simplify.marketplace.web.rest.vm.ManagedUserVM;
+// import com.simplify.marketplace.service.UserService;
+import java.time.LocalDate;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -127,7 +127,7 @@ public class AccountResource {
         Optional<User> user = userRepository.findOneByLogin(userLogin);
         if (!user.isPresent()) {
             throw new AccountResourceException("User could not be found");
-        };
+        }
         userService.updateUser(
             userDTO.getFirstName(),
             userDTO.getLastName(),

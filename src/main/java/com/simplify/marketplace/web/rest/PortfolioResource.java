@@ -1,17 +1,16 @@
 package com.simplify.marketplace.web.rest;
 
-
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.PortfolioRepository;
 import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.PortfolioService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.PortfolioDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,17 +36,21 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class PortfolioResource {
+
     private final UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(PortfolioResource.class);
 
     private static final String ENTITY_NAME = "portfolio";
+
     @Autowired
     ESearchWorkerRepository rep1;
-	@Autowired
-	RabbitTemplate rabbit_msg;
-	@Autowired
-	WorkerRepository wrepo;
+
+    @Autowired
+    RabbitTemplate rabbit_msg;
+
+    @Autowired
+    WorkerRepository wrepo;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -56,7 +59,7 @@ public class PortfolioResource {
 
     private final PortfolioRepository portfolioRepository;
 
-    public PortfolioResource(PortfolioService portfolioService, PortfolioRepository portfolioRepository,UserService userService) {
+    public PortfolioResource(PortfolioService portfolioService, PortfolioRepository portfolioRepository, UserService userService) {
         this.portfolioService = portfolioService;
         this.portfolioRepository = portfolioRepository;
         this.userService = userService;
@@ -75,14 +78,14 @@ public class PortfolioResource {
         if (portfolioDTO.getId() != null) {
             throw new BadRequestAlertException("A new portfolio cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        portfolioDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         portfolioDTO.setUpdatedAt(LocalDate.now());
         portfolioDTO.setCreatedAt(LocalDate.now());
         PortfolioDTO result = portfolioService.save(portfolioDTO);
 
-        String Workerid=portfolioDTO.getWorker().getId().toString();
-        ElasticWorker e=rep1.findById(Workerid).get();
+        String Workerid = portfolioDTO.getWorker().getId().toString();
+        ElasticWorker e = rep1.findById(Workerid).get();
         e.setPortfolios(portfolioService.getPortfolios(result));
 
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", e);
@@ -118,7 +121,7 @@ public class PortfolioResource {
         if (!portfolioRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         portfolioDTO.setUpdatedAt(LocalDate.now());
 
         PortfolioDTO result = portfolioService.save(portfolioDTO);
@@ -155,7 +158,7 @@ public class PortfolioResource {
         if (!portfolioRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        portfolioDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         portfolioDTO.setUpdatedAt(LocalDate.now());
 
         Optional<PortfolioDTO> result = portfolioService.partialUpdate(portfolioDTO);

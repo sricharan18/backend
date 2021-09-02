@@ -1,6 +1,5 @@
 package com.simplify.marketplace.domain;
 
-import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -8,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -49,7 +49,6 @@ public class Worker implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
-
     @Column(name = "created_by")
     private String createdBy;
 
@@ -61,6 +60,7 @@ public class Worker implements Serializable {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -435,4 +435,3 @@ public class Worker implements Serializable {
             "}";
     }
 }
-

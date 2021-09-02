@@ -49,23 +49,19 @@ public class ESearchWorker {
     public ArrayList<ElasticWorker> searchWorkers(@PathVariable String SearchQuery) {
         return workerRepo.searchQuery(SearchQuery);
     }
-    
+
     @GetMapping("/searchByEngagementType/{name}")
     public ArrayList<ElasticWorker> searchByEngagementType(@PathVariable String name) {
-    return workerRepo.searchByEngagementType(name);
+        return workerRepo.searchByEngagementType(name);
     }
-
-
 
     @GetMapping("/searchByEmploymentType/{name}")
     public ArrayList<ElasticWorker> searchByEmploymentType(@PathVariable String name) {
-    return workerRepo.searchByEmploymentType(name);
+        return workerRepo.searchByEmploymentType(name);
     }
 
     @GetMapping("/searchBylocationType/{name}")
     public ArrayList<ElasticWorker> searchBylocationType(@PathVariable String name) {
-    return workerRepo.searchBylocationType(name);
+        return workerRepo.searchBylocationType(name);
     }
-    
-    
 }

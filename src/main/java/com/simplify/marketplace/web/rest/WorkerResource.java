@@ -1,15 +1,15 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.domain.Worker;
 import com.simplify.marketplace.repository.WorkerRepository;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.WorkerService;
 import com.simplify.marketplace.service.dto.WorkerDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,11 +37,13 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class WorkerResource {
+
     private UserService userService;
+
     @Autowired
     RabbitTemplate rabbit_msg;
 
-    @Autowired 
+    @Autowired
     WorkerRepository workerRepo;
 
     private final Logger log = LoggerFactory.getLogger(WorkerResource.class);
@@ -55,7 +57,7 @@ public class WorkerResource {
 
     private final WorkerRepository workerRepository;
 
-    public WorkerResource(WorkerService workerService, WorkerRepository workerRepository,UserService userService) {
+    public WorkerResource(WorkerService workerService, WorkerRepository workerRepository, UserService userService) {
         this.workerService = workerService;
         this.workerRepository = workerRepository;
         this.userService = userService;
@@ -74,13 +76,13 @@ public class WorkerResource {
         if (workerDTO.getId() != null) {
             throw new BadRequestAlertException("A new worker cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        workerDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        workerDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         workerDTO.setUpdatedAt(LocalDate.now());
         workerDTO.setCreatedAt(LocalDate.now());
         WorkerDTO result = workerService.save(workerDTO);
         ElasticWorker ew = new ElasticWorker();
-        
+
         Worker arr = workerRepo.findOneWithEagerRelationships(result.getId()).get();
         ew.setId(result.getId().toString());
         ew.setFirstName(arr.getFirstName());
@@ -90,11 +92,8 @@ public class WorkerResource {
         ew.setDescription(arr.getDescription());
         ew.setDateOfBirth(arr.getDateOfBirth());
         ew.setIsActive(arr.getIsActive());
-        ew.setSkills(arr.getSkills());        
-        
-        
-        
-        
+        ew.setSkills(arr.getSkills());
+
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", ew);
         return ResponseEntity
             .created(new URI("/api/workers/" + result.getId()))
@@ -129,7 +128,7 @@ public class WorkerResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
         workerDTO.setUpdatedAt(LocalDate.now());
-        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         WorkerDTO result = workerService.save(workerDTO);
         return ResponseEntity
             .ok()
@@ -165,7 +164,7 @@ public class WorkerResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
         workerDTO.setUpdatedAt(LocalDate.now());
-        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        workerDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         Optional<WorkerDTO> result = workerService.partialUpdate(workerDTO);
 
         return ResponseUtil.wrapOrNotFound(

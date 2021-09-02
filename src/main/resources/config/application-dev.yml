@@ -20,31 +20,27 @@ logging:
     org.hibernate.SQL: DEBUG
     com.simplify.marketplace: DEBUG
 
+spring:
+  mail:
+    host: smtp.gmail.com
 
+    port: 587
 
-spring: 
-  mail: 
+    username: simplifyvms.marketplace@gmail.com #Replace this field with your Gmail username.
 
-      host: smtp.gmail.com 
+    password: xthdhqgoppxagyaf #Replace this field with your Gmail password/App password.
 
-      port: 587 
+    protocol: smtp
 
-      username: simplifyvms.marketplace@gmail.com  #Replace this field with your Gmail username. 
+    tls: true
 
-      password: xthdhqgoppxagyaf            #Replace this field with your Gmail password/App password. 
+    properties.mail.smtp:
+      auth: true
 
-      protocol: smtp 
+      starttls.enable: true
 
-      tls: true 
+      ssl.trust: smtp.gmail.com
 
-      properties.mail.smtp: 
-
-        auth: true 
-
-        starttls.enable: true 
-
-        ssl.trust: smtp.gmail.com 
-  
   devtools:
     restart:
       enabled: true

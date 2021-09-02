@@ -11,8 +11,8 @@ import lombok.Data;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Education} entity.
  */
- @Data
- public class EducationDTO implements Serializable {
+@Data
+public class EducationDTO implements Serializable {
 
     private Long id;
 
@@ -51,6 +51,4 @@ import lombok.Data;
     private String updatedBy;
 
     private LocalDate updatedAt;
-    
-    
 }

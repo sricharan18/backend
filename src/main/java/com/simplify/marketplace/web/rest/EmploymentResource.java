@@ -1,16 +1,16 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.EmploymentRepository;
 import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.EmploymentService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.EmploymentDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,13 +36,17 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class EmploymentResource {
+
     private UserService userService;
+
     @Autowired
     ESearchWorkerRepository rep1;
-	@Autowired
-	RabbitTemplate rabbit_msg;
-	@Autowired
-	WorkerRepository wrepo;
+
+    @Autowired
+    RabbitTemplate rabbit_msg;
+
+    @Autowired
+    WorkerRepository wrepo;
 
     private final Logger log = LoggerFactory.getLogger(EmploymentResource.class);
 
@@ -55,7 +59,7 @@ public class EmploymentResource {
 
     private final EmploymentRepository employmentRepository;
 
-    public EmploymentResource(EmploymentService employmentService, EmploymentRepository employmentRepository,UserService userService) {
+    public EmploymentResource(EmploymentService employmentService, EmploymentRepository employmentRepository, UserService userService) {
         this.employmentService = employmentService;
         this.employmentRepository = employmentRepository;
         this.userService = userService;
@@ -74,20 +78,19 @@ public class EmploymentResource {
         if (employmentDTO.getId() != null) {
             throw new BadRequestAlertException("A new employment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        employmentDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        employmentDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         employmentDTO.setUpdatedAt(LocalDate.now());
         employmentDTO.setCreatedAt(LocalDate.now());
-        
-        
+
         EmploymentDTO result = employmentService.save(employmentDTO);
-        
-        String Workerid=employmentDTO.getWorker().getId().toString();
-        ElasticWorker elasticworker=rep1.findById(Workerid).get();
+
+        String Workerid = employmentDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker = rep1.findById(Workerid).get();
         elasticworker.setEmployments(employmentService.getSetOfEmployment(result));
 
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
-        
+
         return ResponseEntity
             .created(new URI("/api/employments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -120,7 +123,7 @@ public class EmploymentResource {
         if (!employmentRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         employmentDTO.setUpdatedAt(LocalDate.now());
         EmploymentDTO result = employmentService.save(employmentDTO);
         return ResponseEntity
@@ -156,7 +159,7 @@ public class EmploymentResource {
         if (!employmentRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        employmentDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         employmentDTO.setUpdatedAt(LocalDate.now());
 
         Optional<EmploymentDTO> result = employmentService.partialUpdate(employmentDTO);

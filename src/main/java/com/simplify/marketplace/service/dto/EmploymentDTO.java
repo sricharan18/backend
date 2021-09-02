@@ -2,9 +2,10 @@ package com.simplify.marketplace.service.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Data;
-import java.time.LocalDate;
+
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Employment} entity.
  */
@@ -34,9 +35,8 @@ public class EmploymentDTO implements Serializable {
     private String createdBy;
 
     private LocalDate createdAt;
-    
-    private String updatedBy;
-    
-    private LocalDate updatedAt;
 
+    private String updatedBy;
+
+    private LocalDate updatedAt;
 }

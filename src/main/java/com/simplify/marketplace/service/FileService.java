@@ -4,7 +4,6 @@ import com.simplify.marketplace.domain.File;
 import com.simplify.marketplace.service.dto.FileDTO;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -51,5 +50,5 @@ public interface FileService {
      */
     void delete(Long id);
 
-	Set<File> insertElasticSearch(FileDTO result);
+    Set<File> insertElasticSearch(FileDTO result);
 }

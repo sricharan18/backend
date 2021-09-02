@@ -143,15 +143,12 @@ info:
 # Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-jhipster: 
+jhipster:
+  clientApp:
+    name: 'simplifyMarketplaceApp'
 
-  clientApp: 
-
-    name: 'simplifyMarketplaceApp' 
-
-  mail: 
-
-    from: simplifyvms.marketplace@gmail.com 
+  mail:
+    from: simplifyvms.marketplace@gmail.com
   # By default CORS is disabled. Uncomment to enable.
   # cors:
   #   allowed-origins: "http://localhost:8100,http://localhost:9000"

@@ -1,16 +1,16 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.domain.ElasticWorker;
 import com.simplify.marketplace.repository.ESearchWorkerRepository;
 import com.simplify.marketplace.repository.ReferecesRepository;
 import com.simplify.marketplace.repository.WorkerRepository;
 import com.simplify.marketplace.service.ReferecesService;
+import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.service.dto.ReferecesDTO;
 import com.simplify.marketplace.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,12 +43,15 @@ public class ReferecesResource {
     private final Logger log = LoggerFactory.getLogger(ReferecesResource.class);
 
     private static final String ENTITY_NAME = "refereces";
+
     @Autowired
     ESearchWorkerRepository rep1;
-	@Autowired
-	RabbitTemplate rabbit_msg;
-	@Autowired
-	WorkerRepository wrepo;
+
+    @Autowired
+    RabbitTemplate rabbit_msg;
+
+    @Autowired
+    WorkerRepository wrepo;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -57,7 +60,7 @@ public class ReferecesResource {
 
     private final ReferecesRepository referecesRepository;
 
-    public ReferecesResource(ReferecesService referecesService, ReferecesRepository referecesRepository,UserService userService) {
+    public ReferecesResource(ReferecesService referecesService, ReferecesRepository referecesRepository, UserService userService) {
         this.referecesService = referecesService;
         this.referecesRepository = referecesRepository;
         this.userService = userService;
@@ -76,16 +79,16 @@ public class ReferecesResource {
         if (referecesDTO.getId() != null) {
             throw new BadRequestAlertException("A new refereces cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        referecesDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         referecesDTO.setUpdatedAt(LocalDate.now());
         referecesDTO.setCreatedAt(LocalDate.now());
         ReferecesDTO result = referecesService.save(referecesDTO);
-        
-        String Workerid=referecesDTO.getWorker().getId().toString();
-        ElasticWorker elasticworker=rep1.findById(Workerid).get();
+
+        String Workerid = referecesDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker = rep1.findById(Workerid).get();
         elasticworker.setRefereces(referecesService.getRefereces(result));
-        
+
         rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
         return ResponseEntity
             .created(new URI("/api/refereces/" + result.getId()))
@@ -119,7 +122,7 @@ public class ReferecesResource {
         if (!referecesRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         referecesDTO.setUpdatedAt(LocalDate.now());
         ReferecesDTO result = referecesService.save(referecesDTO);
         return ResponseEntity
@@ -155,7 +158,7 @@ public class ReferecesResource {
         if (!referecesRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
+        referecesDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         referecesDTO.setUpdatedAt(LocalDate.now());
         Optional<ReferecesDTO> result = referecesService.partialUpdate(referecesDTO);
 

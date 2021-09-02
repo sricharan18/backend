@@ -34,7 +34,4 @@ public class OtpDTO implements Serializable {
     private String createdBy;
 
     private LocalDate createdAt;
-    
-
-    
 }

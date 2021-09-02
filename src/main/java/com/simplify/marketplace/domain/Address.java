@@ -8,7 +8,6 @@ import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 /**
  * A Address.
  */
@@ -44,7 +43,7 @@ public class Address implements Serializable {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
-    
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "locationPrefrences", "employment" }, allowSetters = true)
     private Location location;
@@ -52,27 +51,21 @@ public class Address implements Serializable {
     @ManyToOne
     private User user;
 
-    
     public Address id(Long id) {
         this.id = id;
         return this;
     }
 
-    
-    
     public Address line1(String line1) {
         this.line1 = line1;
         return this;
     }
-
-    
 
     public Address line2(String line2) {
         this.line2 = line2;
         return this;
     }
 
-    
     public Address tag(String tag) {
         this.tag = tag;
         return this;
@@ -83,7 +76,6 @@ public class Address implements Serializable {
         return this;
     }
 
- 
     public Address user(User user) {
         this.setUser(user);
         return this;

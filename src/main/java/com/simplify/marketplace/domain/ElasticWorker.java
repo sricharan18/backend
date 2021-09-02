@@ -60,7 +60,7 @@ public class ElasticWorker {
 
     @OneToMany(mappedBy = "worker")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = {  "worker" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "worker" }, allowSetters = true)
     private Set<Education> educations = new HashSet<>();
 
     @OneToMany(mappedBy = "worker")

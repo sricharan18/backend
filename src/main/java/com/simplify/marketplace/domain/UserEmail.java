@@ -82,6 +82,7 @@ public class UserEmail implements Serializable {
         this.setUser(user);
         return this;
     }
+
     public UserEmail createdBy(String createdBy) {
         this.createdBy = createdBy;
         return this;

@@ -58,7 +58,7 @@ public class Certificate implements Serializable {
     private Worker worker;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
- 
+
     public Certificate id(Long id) {
         this.id = id;
         return this;

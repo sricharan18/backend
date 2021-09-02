@@ -1,20 +1,20 @@
 package com.simplify.marketplace.service.dto;
 
-import java.time.LocalDate;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.validation.constraints.*;
 import lombok.Data;
-import java.time.LocalDate;
 
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Worker} entity.
  */
- @Data
- public class WorkerDTO implements Serializable {
+@Data
+public class WorkerDTO implements Serializable {
 
     private Long id;
 
@@ -44,6 +44,4 @@ import java.time.LocalDate;
     private LocalDate updatedAt;
 
     private Set<SkillsMasterDTO> skills = new HashSet<>();
-
-    
 }

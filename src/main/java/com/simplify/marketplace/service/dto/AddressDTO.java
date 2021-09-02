@@ -1,15 +1,15 @@
 package com.simplify.marketplace.service.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Data;
-import java.time.LocalDate;
 
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Address} entity.
  */
- @Data
- public class AddressDTO implements Serializable {
+@Data
+public class AddressDTO implements Serializable {
 
     private Long id;
 
@@ -30,6 +30,4 @@ import java.time.LocalDate;
     private String updatedBy;
 
     private LocalDate updatedAt;
-
-    
 }

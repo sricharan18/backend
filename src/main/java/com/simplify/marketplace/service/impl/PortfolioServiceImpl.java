@@ -10,7 +10,6 @@ import com.simplify.marketplace.service.dto.PortfolioDTO;
 import com.simplify.marketplace.service.mapper.PortfolioMapper;
 import java.util.Optional;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +30,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PortfolioRepository portfolioRepository;
 
     private final PortfolioMapper portfolioMapper;
-    
+
     @Autowired
-	WorkerRepository workerRepo;
-	
-	@Autowired
+    WorkerRepository workerRepo;
+
+    @Autowired
     ESearchWorkerRepository elasticWorkerRepo;
 
     public PortfolioServiceImpl(PortfolioRepository portfolioRepository, PortfolioMapper portfolioMapper) {
@@ -87,25 +86,22 @@ public class PortfolioServiceImpl implements PortfolioService {
         log.debug("Request to delete Portfolio : {}", id);
         portfolioRepository.deleteById(id);
     }
-    
-    public Set<Portfolio> getPortfolios(PortfolioDTO portfolioDTO)
-    {
-    	
-        String Workerid=portfolioDTO.getWorker().getId().toString();
-    	ElasticWorker elasticworker=elasticWorkerRepo.findById(Workerid).get();
-    	
-    	Portfolio portfolio=new Portfolio();
-    	
-    	portfolio.setId(portfolioDTO.getId());
-    	portfolio.setPortfolioURL(portfolioDTO.getPortfolioURL());
-    	portfolio.setType(portfolioDTO.getType());
-    	
-    	portfolio.setWorker(workerRepo.findById(portfolioDTO.getWorker().getId()).get());
-    	
-    	Set<Portfolio> set=elasticworker.getPortfolios();
-    	set.add(portfolio);
-    	
-    	
-    	return set;
+
+    public Set<Portfolio> getPortfolios(PortfolioDTO portfolioDTO) {
+        String Workerid = portfolioDTO.getWorker().getId().toString();
+        ElasticWorker elasticworker = elasticWorkerRepo.findById(Workerid).get();
+
+        Portfolio portfolio = new Portfolio();
+
+        portfolio.setId(portfolioDTO.getId());
+        portfolio.setPortfolioURL(portfolioDTO.getPortfolioURL());
+        portfolio.setType(portfolioDTO.getType());
+
+        portfolio.setWorker(workerRepo.findById(portfolioDTO.getWorker().getId()).get());
+
+        Set<Portfolio> set = elasticworker.getPortfolios();
+        set.add(portfolio);
+
+        return set;
     }
 }
