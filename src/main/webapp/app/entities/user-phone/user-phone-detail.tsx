@@ -54,9 +54,9 @@ export const UserPhoneDetail = (props: RouteComponentProps<{ id: string }>) => {
           </dt>
           <dd>{userPhoneEntity.tag}</dd>
           <dt>
-            <Translate contentKey="simplifyMarketplaceApp.userPhone.customUser">Custom User</Translate>
+            <Translate contentKey="simplifyMarketplaceApp.userPhone.user">User</Translate>
           </dt>
-          <dd>{userPhoneEntity.customUser ? userPhoneEntity.customUser.id : ''}</dd>
+          <dd>{userPhoneEntity.user ? userPhoneEntity.user.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/user-phone" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

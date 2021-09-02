@@ -44,7 +44,7 @@ public class SkillsMaster implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(
         value = {
-            "customUser", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
+            "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
         },
         allowSetters = true
     )

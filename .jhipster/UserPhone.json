@@ -21,9 +21,9 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "customUser",
+      "otherEntityName": "user",
       "otherEntityRelationshipName": "userPhone",
-      "relationshipName": "customUser"
+      "relationshipName": "user"
     }
   ],
   "entityTableName": "user_phone",

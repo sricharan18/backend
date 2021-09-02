@@ -8,8 +8,8 @@ import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.OtpAttempt} entity.
  */
-@Data
-public class OtpAttemptDTO implements Serializable {
+ @Data
+ public class OtpAttemptDTO implements Serializable {
 
     private Long id;
 
@@ -29,5 +29,5 @@ public class OtpAttemptDTO implements Serializable {
 
     private LocalDate createdAt;
 
-   
+  
 }

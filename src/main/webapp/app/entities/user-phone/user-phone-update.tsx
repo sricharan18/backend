@@ -4,8 +4,8 @@ import { Button, Row, Col, FormText } from 'reactstrap';
 import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ICustomUser } from 'app/shared/model/custom-user.model';
-import { getEntities as getCustomUsers } from 'app/entities/custom-user/custom-user.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './user-phone.reducer';
 import { IUserPhone } from 'app/shared/model/user-phone.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -17,7 +17,7 @@ export const UserPhoneUpdate = (props: RouteComponentProps<{ id: string }>) => {
 
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const customUsers = useAppSelector(state => state.customUser.entities);
+  const users = useAppSelector(state => state.userManagement.users);
   const userPhoneEntity = useAppSelector(state => state.userPhone.entity);
   const loading = useAppSelector(state => state.userPhone.loading);
   const updating = useAppSelector(state => state.userPhone.updating);
@@ -32,7 +32,7 @@ export const UserPhoneUpdate = (props: RouteComponentProps<{ id: string }>) => {
       dispatch(getEntity(props.match.params.id));
     }
 
-    dispatch(getCustomUsers({}));
+    dispatch(getUsers({}));
   }, []);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const UserPhoneUpdate = (props: RouteComponentProps<{ id: string }>) => {
     const entity = {
       ...userPhoneEntity,
       ...values,
-      customUser: customUsers.find(it => it.id.toString() === values.customUserId.toString()),
+      user: users.find(it => it.id.toString() === values.userId.toString()),
     };
 
     if (isNew) {
@@ -60,7 +60,7 @@ export const UserPhoneUpdate = (props: RouteComponentProps<{ id: string }>) => {
       ? {}
       : {
           ...userPhoneEntity,
-          customUserId: userPhoneEntity?.customUser?.id,
+          userId: userPhoneEntity?.user?.id,
         };
 
   return (
@@ -119,15 +119,15 @@ export const UserPhoneUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 type="text"
               />
               <ValidatedField
-                id="user-phone-customUser"
-                name="customUserId"
-                data-cy="customUser"
-                label={translate('simplifyMarketplaceApp.userPhone.customUser')}
+                id="user-phone-user"
+                name="userId"
+                data-cy="user"
+                label={translate('simplifyMarketplaceApp.userPhone.user')}
                 type="select"
               >
                 <option value="" key="0" />
-                {customUsers
-                  ? customUsers.map(otherEntity => (
+                {users
+                  ? users.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.id}
                       </option>

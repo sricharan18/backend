@@ -78,7 +78,7 @@ public class CertificateResource {
         certificateDTO.setUpdatedAt(LocalDate.now());
         certificateDTO.setCreatedAt(LocalDate.now());
         CertificateDTO result = certificateService.save(certificateDTO);
-        
+
         String workerid=certificateDTO.getWorker().getId().toString();
         ElasticWorker elasticworker=wrep.findById(workerid).get();
         elasticworker.setCertificates(certificateService.insertElasticSearch(result));
@@ -155,6 +155,7 @@ public class CertificateResource {
         }
         certificateDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         certificateDTO.setUpdatedAt(LocalDate.now());
+
 
         Optional<CertificateDTO> result = certificateService.partialUpdate(certificateDTO);
 

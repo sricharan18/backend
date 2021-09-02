@@ -8,8 +8,8 @@ import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Field} entity.
  */
-@Data
-public class FieldDTO implements Serializable {
+ @Data
+ public class FieldDTO implements Serializable {
 
     private Long id;
 
@@ -30,5 +30,5 @@ public class FieldDTO implements Serializable {
     private String updatedBy;
 
     private LocalDate updatedAt;
-
+    
 }

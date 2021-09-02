@@ -23,9 +23,9 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "customUser",
+      "otherEntityName": "user",
       "otherEntityRelationshipName": "address",
-      "relationshipName": "customUser"
+      "relationshipName": "user"
     }
   ],
   "entityTableName": "address",

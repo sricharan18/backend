@@ -1,4 +1,4 @@
-import { ICustomUser } from 'app/shared/model/custom-user.model';
+import { IUser } from 'app/shared/model/user.model';
 
 export interface IUserPhone {
   id?: number;
@@ -6,7 +6,7 @@ export interface IUserPhone {
   isActive?: boolean | null;
   isPrimary?: boolean | null;
   tag?: string | null;
-  customUser?: ICustomUser | null;
+  user?: IUser | null;
 }
 
 export const defaultValue: Readonly<IUserPhone> = {

@@ -46,12 +46,10 @@ public class UserPhone implements Serializable {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
-
     @ManyToOne
-    @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
-    private CustomUser customUser;
+    private User user;
 
-    public UserPhone id(Long id) {
+        public UserPhone id(Long id) {
         this.id = id;
         return this;
     }
@@ -76,8 +74,8 @@ public class UserPhone implements Serializable {
         return this;
     }
 
-    public UserPhone customUser(CustomUser customUser) {
-        this.setCustomUser(customUser);
+    public UserPhone user(User user) {
+        this.setUser(user);
         return this;
     }
 
@@ -100,4 +98,5 @@ public class UserPhone implements Serializable {
         this.updatedAt = updatedAt;
         return this;
     }
+  
 }

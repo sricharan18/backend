@@ -74,9 +74,9 @@ export const ClientDetail = (props: RouteComponentProps<{ id: string }>) => {
             {clientEntity.startDate ? <TextFormat value={clientEntity.startDate} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
           </dd>
           <dt>
-            <Translate contentKey="simplifyMarketplaceApp.client.customUser">Custom User</Translate>
+            <Translate contentKey="simplifyMarketplaceApp.client.user">User</Translate>
           </dt>
-          <dd>{clientEntity.customUser ? clientEntity.customUser.id : ''}</dd>
+          <dd>{clientEntity.user ? clientEntity.user.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/client" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

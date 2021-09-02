@@ -1,7 +1,5 @@
 package com.simplify.marketplace.web.rest;
 
-import java.time.LocalDate;  
-import com.simplify.marketplace.service.UserService;
 import com.simplify.marketplace.repository.CustomUserRepository;
 import com.simplify.marketplace.service.CustomUserService;
 import com.simplify.marketplace.service.dto.CustomUserDTO;
@@ -31,7 +29,6 @@ import tech.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class CustomUserResource {
-    private UserService userService;
 
     private final Logger log = LoggerFactory.getLogger(CustomUserResource.class);
 
@@ -44,10 +41,9 @@ public class CustomUserResource {
 
     private final CustomUserRepository customUserRepository;
 
-    public CustomUserResource(CustomUserService customUserService, CustomUserRepository customUserRepository,UserService userService) {
+    public CustomUserResource(CustomUserService customUserService, CustomUserRepository customUserRepository) {
         this.customUserService = customUserService;
         this.customUserRepository = customUserRepository;
-        this.userService = userService;
     }
 
     /**
@@ -63,10 +59,6 @@ public class CustomUserResource {
         if (customUserDTO.getId() != null) {
             throw new BadRequestAlertException("A new customUser cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        customUserDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        customUserDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        customUserDTO.setUpdatedAt(LocalDate.now());
-        customUserDTO.setCreatedAt(LocalDate.now());
         CustomUserDTO result = customUserService.save(customUserDTO);
         return ResponseEntity
             .created(new URI("/api/custom-users/" + result.getId()))
@@ -100,8 +92,7 @@ public class CustomUserResource {
         if (!customUserRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        customUserDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        customUserDTO.setUpdatedAt(LocalDate.now());
+
         CustomUserDTO result = customUserService.save(customUserDTO);
         return ResponseEntity
             .ok()
@@ -136,8 +127,7 @@ public class CustomUserResource {
         if (!customUserRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        customUserDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
-        customUserDTO.setUpdatedAt(LocalDate.now());
+
         Optional<CustomUserDTO> result = customUserService.partialUpdate(customUserDTO);
 
         return ResponseUtil.wrapOrNotFound(

@@ -46,7 +46,7 @@ public class Portfolio implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(
         value = {
-            "customUser", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
+            "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
         },
         allowSetters = true
     )

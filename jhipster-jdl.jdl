@@ -30,11 +30,6 @@ entity OtpAttempt {
     coookie String
 }
 
-
-entity CustomUser {
-}
-
-
 entity UserEmail {
 	email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
     isActive Boolean,
@@ -49,9 +44,12 @@ entity UserPhone {
     tag String,
 }
 
-relationship OneToMany {
-	CustomUser to UserEmail{customUser},
-    CustomUser to UserPhone{customUser}
+relationship ManyToOne {
+  UserEmail{user} to User
+}
+
+relationship ManyToOne {
+  UserPhone{user} to User
 }
 
 entity Address {
@@ -71,8 +69,8 @@ relationship ManyToOne {
 	Address{location} to Location
 }
 
-relationship OneToMany {
-	CustomUser to Address{customUser}
+relationship ManyToOne {
+  Address{user} to User
 }
 
 entity Client {
@@ -104,11 +102,11 @@ entity Worker {
     }
 
 relationship OneToOne {
-	Worker{customUser} to CustomUser
+  Worker{user} to User
 }
 
 relationship OneToOne {
-	Client{customUser} to CustomUser
+  Client{user} to User
 }
 
 

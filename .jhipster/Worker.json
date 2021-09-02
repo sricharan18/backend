@@ -35,9 +35,9 @@
   "relationships": [
     {
       "relationshipType": "one-to-one",
-      "otherEntityName": "customUser",
+      "otherEntityName": "user",
       "otherEntityRelationshipName": "worker",
-      "relationshipName": "customUser",
+      "relationshipName": "user",
       "ownerSide": true
     },
     {

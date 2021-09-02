@@ -79,7 +79,7 @@ public class WorkerResource {
         workerDTO.setUpdatedAt(LocalDate.now());
         workerDTO.setCreatedAt(LocalDate.now());
         WorkerDTO result = workerService.save(workerDTO);
- ElasticWorker ew = new ElasticWorker();
+        ElasticWorker ew = new ElasticWorker();
         
         Worker arr = workerRepo.findOneWithEagerRelationships(result.getId()).get();
         ew.setId(result.getId().toString());
@@ -90,9 +90,7 @@ public class WorkerResource {
         ew.setDescription(arr.getDescription());
         ew.setDateOfBirth(arr.getDateOfBirth());
         ew.setIsActive(arr.getIsActive());
-        ew.setSkills(arr.getSkills());
-        ew.setCustomUser(arr.getCustomUser());
-        
+        ew.setSkills(arr.getSkills());        
         
         
         

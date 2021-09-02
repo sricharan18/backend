@@ -6,7 +6,6 @@ import com.simplify.marketplace.domain.enumeration.EducationGrade;
 import com.simplify.marketplace.domain.enumeration.MarksType;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import javax.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
@@ -84,7 +83,7 @@ public class Education implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(
         value = {
-            "customUser", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
+            "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
         },
         allowSetters = true
     )

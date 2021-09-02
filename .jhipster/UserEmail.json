@@ -23,9 +23,9 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "customUser",
+      "otherEntityName": "user",
       "otherEntityRelationshipName": "userEmail",
-      "relationshipName": "customUser"
+      "relationshipName": "user"
     }
   ],
   "entityTableName": "user_email",

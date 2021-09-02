@@ -139,8 +139,7 @@ export const UserEmail = (props: RouteComponentProps<{ url: string }>) => {
                     <Translate contentKey="simplifyMarketplaceApp.userEmail.tag">Tag</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="simplifyMarketplaceApp.userEmail.customUser">Custom User</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="simplifyMarketplaceApp.userEmail.user">User</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -157,9 +156,7 @@ export const UserEmail = (props: RouteComponentProps<{ url: string }>) => {
                     <td>{userEmail.isActive ? 'true' : 'false'}</td>
                     <td>{userEmail.isPrimary ? 'true' : 'false'}</td>
                     <td>{userEmail.tag}</td>
-                    <td>
-                      {userEmail.customUser ? <Link to={`custom-user/${userEmail.customUser.id}`}>{userEmail.customUser.id}</Link> : ''}
-                    </td>
+                    <td>{userEmail.user ? userEmail.user.id : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${userEmail.id}`} color="info" size="sm" data-cy="entityDetailsButton">

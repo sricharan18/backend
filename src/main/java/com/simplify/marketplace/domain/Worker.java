@@ -49,7 +49,7 @@ public class Worker implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    
+
     @Column(name = "created_by")
     private String createdBy;
 
@@ -61,11 +61,9 @@ public class Worker implements Serializable {
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
-
-    @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private CustomUser customUser;
+    private User user;
 
     @OneToMany(mappedBy = "worker")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -138,7 +136,7 @@ public class Worker implements Serializable {
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
-    
+
     public Worker lastName(String lastName) {
         this.lastName = lastName;
         return this;
@@ -184,13 +182,13 @@ public class Worker implements Serializable {
         this.isActive = isActive;
     }
 
-    public Worker customUser(CustomUser customUser) {
-        this.setCustomUser(customUser);
+    public Worker user(User user) {
+        this.setUser(user);
         return this;
     }
 
-    public void setCustomUser(CustomUser customUser) {
-        this.customUser = customUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Worker files(Set<File> files) {

@@ -4,8 +4,8 @@ import { Button, Row, Col, FormText } from 'reactstrap';
 import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ICustomUser } from 'app/shared/model/custom-user.model';
-import { getEntities as getCustomUsers } from 'app/entities/custom-user/custom-user.reducer';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { ISkillsMaster } from 'app/shared/model/skills-master.model';
 import { getEntities as getSkillsMasters } from 'app/entities/skills-master/skills-master.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './worker.reducer';
@@ -19,7 +19,7 @@ export const WorkerUpdate = (props: RouteComponentProps<{ id: string }>) => {
 
   const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const customUsers = useAppSelector(state => state.customUser.entities);
+  const users = useAppSelector(state => state.userManagement.users);
   const skillsMasters = useAppSelector(state => state.skillsMaster.entities);
   const workerEntity = useAppSelector(state => state.worker.entity);
   const loading = useAppSelector(state => state.worker.loading);
@@ -35,7 +35,7 @@ export const WorkerUpdate = (props: RouteComponentProps<{ id: string }>) => {
       dispatch(getEntity(props.match.params.id));
     }
 
-    dispatch(getCustomUsers({}));
+    dispatch(getUsers({}));
     dispatch(getSkillsMasters({}));
   }, []);
 
@@ -50,7 +50,7 @@ export const WorkerUpdate = (props: RouteComponentProps<{ id: string }>) => {
       ...workerEntity,
       ...values,
       skills: mapIdList(values.skills),
-      customUser: customUsers.find(it => it.id.toString() === values.customUserId.toString()),
+      user: users.find(it => it.id.toString() === values.userId.toString()),
     };
 
     if (isNew) {
@@ -65,7 +65,7 @@ export const WorkerUpdate = (props: RouteComponentProps<{ id: string }>) => {
       ? {}
       : {
           ...workerEntity,
-          customUserId: workerEntity?.customUser?.id,
+          userId: workerEntity?.user?.id,
           skills: workerEntity?.skills?.map(e => e.id.toString()),
         };
 
@@ -151,15 +151,15 @@ export const WorkerUpdate = (props: RouteComponentProps<{ id: string }>) => {
                 type="checkbox"
               />
               <ValidatedField
-                id="worker-customUser"
-                name="customUserId"
-                data-cy="customUser"
-                label={translate('simplifyMarketplaceApp.worker.customUser')}
+                id="worker-user"
+                name="userId"
+                data-cy="user"
+                label={translate('simplifyMarketplaceApp.worker.user')}
                 type="select"
               >
                 <option value="" key="0" />
-                {customUsers
-                  ? customUsers.map(otherEntity => (
+                {users
+                  ? users.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.id}
                       </option>

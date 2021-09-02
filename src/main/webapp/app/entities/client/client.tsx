@@ -152,7 +152,7 @@ export const Client = (props: RouteComponentProps<{ url: string }>) => {
                     <Translate contentKey="simplifyMarketplaceApp.client.startDate">Start Date</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="simplifyMarketplaceApp.client.customUser">Custom User</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="simplifyMarketplaceApp.client.user">User</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -174,7 +174,7 @@ export const Client = (props: RouteComponentProps<{ url: string }>) => {
                     <td>{client.isActive ? 'true' : 'false'}</td>
                     <td>{client.description}</td>
                     <td>{client.startDate ? <TextFormat type="date" value={client.startDate} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                    <td>{client.customUser ? <Link to={`custom-user/${client.customUser.id}`}>{client.customUser.id}</Link> : ''}</td>
+                    <td>{client.user ? client.user.id : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${client.id}`} color="info" size="sm" data-cy="entityDetailsButton">

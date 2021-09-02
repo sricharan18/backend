@@ -8,8 +8,8 @@ import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Certificate} entity.
  */
-@Data
-public class CertificateDTO implements Serializable {
+ @Data
+ public class CertificateDTO implements Serializable {
 
     private Long id;
 
@@ -33,4 +33,5 @@ public class CertificateDTO implements Serializable {
     
     private LocalDate updatedAt;
 
+    
 }

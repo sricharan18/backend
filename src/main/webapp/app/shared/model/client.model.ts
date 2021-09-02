@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { ICustomUser } from 'app/shared/model/custom-user.model';
+import { IUser } from 'app/shared/model/user.model';
 import { CompanyType } from 'app/shared/model/enumerations/company-type.model';
 
 export interface IClient {
@@ -11,7 +11,7 @@ export interface IClient {
   isActive?: boolean | null;
   description?: string | null;
   startDate?: string | null;
-  customUser?: ICustomUser | null;
+  user?: IUser | null;
 }
 
 export const defaultValue: Readonly<IClient> = {

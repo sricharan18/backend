@@ -54,9 +54,9 @@ export const UserEmailDetail = (props: RouteComponentProps<{ id: string }>) => {
           </dt>
           <dd>{userEmailEntity.tag}</dd>
           <dt>
-            <Translate contentKey="simplifyMarketplaceApp.userEmail.customUser">Custom User</Translate>
+            <Translate contentKey="simplifyMarketplaceApp.userEmail.user">User</Translate>
           </dt>
-          <dd>{userEmailEntity.customUser ? userEmailEntity.customUser.id : ''}</dd>
+          <dd>{userEmailEntity.user ? userEmailEntity.user.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/user-email" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

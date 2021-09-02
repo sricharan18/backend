@@ -8,8 +8,8 @@ import lombok.Data;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Client} entity.
  */
-@Data
-public class ClientDTO implements Serializable {
+ @Data
+ public class ClientDTO implements Serializable {
 
     private Long id;
 
@@ -27,8 +27,7 @@ public class ClientDTO implements Serializable {
 
     private LocalDate startDate;
 
-    private CustomUserDTO customUser;
-
+    private UserDTO user;
     private String createdBy;
 
     private LocalDate createdAt;
@@ -36,5 +35,5 @@ public class ClientDTO implements Serializable {
     private String updatedBy;
 
     private LocalDate updatedAt;
-
+    
 }

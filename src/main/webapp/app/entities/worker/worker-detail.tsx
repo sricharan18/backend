@@ -74,9 +74,9 @@ export const WorkerDetail = (props: RouteComponentProps<{ id: string }>) => {
           </dt>
           <dd>{workerEntity.isActive ? 'true' : 'false'}</dd>
           <dt>
-            <Translate contentKey="simplifyMarketplaceApp.worker.customUser">Custom User</Translate>
+            <Translate contentKey="simplifyMarketplaceApp.worker.user">User</Translate>
           </dt>
-          <dd>{workerEntity.customUser ? workerEntity.customUser.id : ''}</dd>
+          <dd>{workerEntity.user ? workerEntity.user.id : ''}</dd>
           <dt>
             <Translate contentKey="simplifyMarketplaceApp.worker.skill">Skill</Translate>
           </dt>

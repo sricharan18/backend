@@ -64,7 +64,7 @@ public class AddressResource {
         if (addressDTO.getId() != null) {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
-       
+
         addressDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId()+"");
         addressDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId()+"");
         addressDTO.setUpdatedAt(LocalDate.now());

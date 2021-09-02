@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.Objects;
 import lombok.Data;
 import java.time.LocalDate;
+
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Address} entity.
  */
-@Data
-public class AddressDTO implements Serializable {
+ @Data
+ public class AddressDTO implements Serializable {
 
     private Long id;
 
@@ -20,7 +21,7 @@ public class AddressDTO implements Serializable {
 
     private LocationDTO location;
 
-    private CustomUserDTO customUser;
+    private UserDTO user;
 
     private String createdBy;
 
@@ -30,4 +31,5 @@ public class AddressDTO implements Serializable {
 
     private LocalDate updatedAt;
 
+    
 }

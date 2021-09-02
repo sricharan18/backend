@@ -14,10 +14,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="location"/>
 
-        <addForeignKeyConstraint baseColumnNames="custom_user_id"
+        <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="address"
-                                 constraintName="fk_address__custom_user_id"
+                                 constraintName="fk_address__user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="custom_user"/>
+                                 referencedTableName="jhi_user"/>
     </changeSet>
 </databaseChangeLog>

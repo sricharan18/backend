@@ -1,9 +1,7 @@
 package com.simplify.marketplace.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.simplify.marketplace.domain.enumeration.CompanyType;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDate;
 import javax.persistence.*;
 import lombok.Data;
@@ -59,11 +57,11 @@ public class Client implements Serializable {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
-    @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private CustomUser customUser;
+    private User user;
 
+    
     public Client id(Long id) {
         this.id = id;
         return this;
@@ -74,7 +72,7 @@ public class Client implements Serializable {
         return this;
     }
 
-    public Client companyWebsite(String companyWebsite) {
+     public Client companyWebsite(String companyWebsite) {
         this.companyWebsite = companyWebsite;
         return this;
     }
@@ -104,8 +102,8 @@ public class Client implements Serializable {
         return this;
     }
 
-    public Client customUser(CustomUser customUser) {
-        this.setCustomUser(customUser);
+    public Client user(User user) {
+        this.setUser(user);
         return this;
     }
 
@@ -127,5 +125,5 @@ public class Client implements Serializable {
     public Client updatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
         return this;
-    }
+    } 
 }

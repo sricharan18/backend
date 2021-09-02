@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { ICustomUser } from 'app/shared/model/custom-user.model';
+import { IUser } from 'app/shared/model/user.model';
 import { IFile } from 'app/shared/model/file.model';
 import { IEducation } from 'app/shared/model/education.model';
 import { ICertificate } from 'app/shared/model/certificate.model';
@@ -18,7 +18,7 @@ export interface IWorker {
   description?: string | null;
   dateOfBirth?: string | null;
   isActive?: boolean | null;
-  customUser?: ICustomUser | null;
+  user?: IUser | null;
   files?: IFile[] | null;
   educations?: IEducation[] | null;
   certificates?: ICertificate[] | null;

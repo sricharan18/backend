@@ -8,8 +8,8 @@ import java.time.LocalDate;
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Category} entity.
  */
-@Data
-public class CategoryDTO implements Serializable {
+ @Data
+ public class CategoryDTO implements Serializable {
 
     private Long id;
 
@@ -20,7 +20,7 @@ public class CategoryDTO implements Serializable {
     private Boolean isActive;
 
     private CategoryDTO parent;
-    
+
     private String createdBy;
 
     private LocalDate createdAt;
@@ -28,5 +28,5 @@ public class CategoryDTO implements Serializable {
     private String updatedBy;
 
     private LocalDate updatedAt;
-
+    
 }

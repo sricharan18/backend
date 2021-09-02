@@ -51,8 +51,7 @@ public class UserEmail implements Serializable {
     private LocalDate updatedAt;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "userEmails", "userPhones", "addresses" }, allowSetters = true)
-    private CustomUser customUser;
+    private User user;
 
     public UserEmail id(Long id) {
         this.id = id;
@@ -79,11 +78,10 @@ public class UserEmail implements Serializable {
         return this;
     }
 
-    public UserEmail customUser(CustomUser customUser) {
-        this.setCustomUser(customUser);
+    public UserEmail user(User user) {
+        this.setUser(user);
         return this;
     }
-
     public UserEmail createdBy(String createdBy) {
         this.createdBy = createdBy;
         return this;

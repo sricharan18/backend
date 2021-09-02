@@ -9,7 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A Certificate.sddfg
+ * A Certificate.
  */
 @Entity
 @Table(name = "certificate")
@@ -52,15 +52,13 @@ public class Certificate implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(
-        value = {
-            "customUser", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
-        },
+        value = { "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills" },
         allowSetters = true
     )
     private Worker worker;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
+ 
     public Certificate id(Long id) {
         this.id = id;
         return this;

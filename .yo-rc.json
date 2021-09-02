@@ -15,7 +15,7 @@
     "enableSwaggerCodegen": true,
     "enableTranslation": true,
     "jhiPrefix": "jhi",
-    "languages": ["en"],
+    "languages": [],
     "messageBroker": false,
     "prodDatabaseType": "mysql",
     "searchEngine": false,

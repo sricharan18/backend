@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class CertificateServiceImpl implements CertificateService {
-	
-	@Autowired
+
+    @Autowired
 	ESearchWorkerRepository ewrep;
 	
 	@Autowired

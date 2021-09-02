@@ -6,7 +6,6 @@ import com.simplify.marketplace.domain.enumeration.EngagementType;
 import com.simplify.marketplace.domain.enumeration.LocationType;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -94,7 +93,7 @@ public class JobPreference implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(
         value = {
-            "customUser", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
+            "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
         },
         allowSetters = true
     )

@@ -150,7 +150,7 @@ export const Worker = (props: RouteComponentProps<{ url: string }>) => {
                     <Translate contentKey="simplifyMarketplaceApp.worker.isActive">Is Active</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th>
-                    <Translate contentKey="simplifyMarketplaceApp.worker.customUser">Custom User</Translate> <FontAwesomeIcon icon="sort" />
+                    <Translate contentKey="simplifyMarketplaceApp.worker.user">User</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
                   <th />
                 </tr>
@@ -172,7 +172,7 @@ export const Worker = (props: RouteComponentProps<{ url: string }>) => {
                       {worker.dateOfBirth ? <TextFormat type="date" value={worker.dateOfBirth} format={APP_LOCAL_DATE_FORMAT} /> : null}
                     </td>
                     <td>{worker.isActive ? 'true' : 'false'}</td>
-                    <td>{worker.customUser ? <Link to={`custom-user/${worker.customUser.id}`}>{worker.customUser.id}</Link> : ''}</td>
+                    <td>{worker.user ? worker.user.id : ''}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${worker.id}`} color="info" size="sm" data-cy="entityDetailsButton">

@@ -9,11 +9,12 @@ import java.util.Set;
 import javax.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDate;
+
 /**
  * A DTO for the {@link com.simplify.marketplace.domain.Worker} entity.
  */
-@Data
-public class WorkerDTO implements Serializable {
+ @Data
+ public class WorkerDTO implements Serializable {
 
     private Long id;
 
@@ -33,8 +34,7 @@ public class WorkerDTO implements Serializable {
 
     private Boolean isActive;
 
-    private CustomUserDTO customUser;
-
+    private UserDTO user;
     private String createdBy;
 
     private LocalDate createdAt;
@@ -45,5 +45,5 @@ public class WorkerDTO implements Serializable {
 
     private Set<SkillsMasterDTO> skills = new HashSet<>();
 
-   
+    
 }

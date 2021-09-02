@@ -51,4 +51,5 @@ public interface CertificateService {
      */
     void delete(Long id);
     Set<Certificate> insertElasticSearch(CertificateDTO certificateDTO);
+    
 }

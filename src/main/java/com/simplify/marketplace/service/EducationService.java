@@ -50,6 +50,6 @@ public interface EducationService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-    
-    Set<Education> insertElasticSearch(EducationDTO educationdto);
+
+    Set<Education> insertElasticSearch(EducationDTO educationdto);    
 }

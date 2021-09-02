@@ -23,7 +23,7 @@ public class UserEmailDTO implements Serializable {
 
     private String tag;
 
-    private CustomUserDTO customUser;
+    private UserDTO user;
 
     private String createdBy;
 

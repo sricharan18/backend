@@ -3,7 +3,6 @@ package com.simplify.marketplace.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -71,7 +70,7 @@ public class Employment implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(
         value = {
-            "customUser", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
+            "user", "files", "educations", "certificates", "employments", "portfolios", "refereces", "jobPreferences", "skills",
         },
         allowSetters = true
     )
