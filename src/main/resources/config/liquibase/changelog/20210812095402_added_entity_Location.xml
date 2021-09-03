@@ -29,6 +29,19 @@
             <column name="employment_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_at" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="updated_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="updated_at" type="date">
+                <constraints nullable="true" />
+            </column>
+ 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -53,6 +66,10 @@
             <column name="country" type="string"/>
             <column name="state" type="string"/>
             <column name="city" type="string"/>
+            <column name="created_by" type="string"/>
+            <column name="created_at" type="date"/>
+            <column name="updated_by" type="string"/>
+            <column name="updated_at" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
