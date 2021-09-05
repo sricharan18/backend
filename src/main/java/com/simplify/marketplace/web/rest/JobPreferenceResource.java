@@ -82,17 +82,17 @@ public class JobPreferenceResource {
         if (jobPreferenceDTO.getId() != null) {
             throw new BadRequestAlertException("A new jobPreference cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        jobPreferenceDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
-        jobPreferenceDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        // jobPreferenceDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        // jobPreferenceDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         jobPreferenceDTO.setUpdatedAt(LocalDate.now());
         jobPreferenceDTO.setCreatedAt(LocalDate.now());
         JobPreferenceDTO result = jobPreferenceService.save(jobPreferenceDTO);
 
-        String Workerid = jobPreferenceDTO.getWorker().getId().toString();
-        ElasticWorker elasticworker = rep1.findById(Workerid).get();
-        elasticworker.setJobPreferences(jobPreferenceService.getJobPreferences(result));
+        // String Workerid = jobPreferenceDTO.getWorker().getId().toString();
+        // ElasticWorker elasticworker = rep1.findById(Workerid).get();
+        // elasticworker.setJobPreferences(jobPreferenceService.getJobPreferences(result));
 
-        rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
+        // rabbit_msg.convertAndSend("topicExchange1", "routingKey", elasticworker);
 
         return ResponseEntity
             .created(new URI("/api/job-preferences/" + result.getId()))

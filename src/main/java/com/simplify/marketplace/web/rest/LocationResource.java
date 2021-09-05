@@ -65,8 +65,8 @@ public class LocationResource {
         if (locationDTO.getId() != null) {
             throw new BadRequestAlertException("A new location cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        locationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
-        locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        // locationDTO.setCreatedBy(userService.getUserWithAuthorities().get().getId() + "");
+        // locationDTO.setUpdatedBy(userService.getUserWithAuthorities().get().getId() + "");
         locationDTO.setUpdatedAt(LocalDate.now());
         locationDTO.setCreatedAt(LocalDate.now());
         LocationDTO result = locationService.save(locationDTO);
